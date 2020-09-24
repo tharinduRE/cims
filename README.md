@@ -11,6 +11,7 @@ All the backend operations handled by rest api provided here :
 [CIMS REST API](https://github.com/tharinduRE/cims-rest-api)
 
 ## LICENSE
+[MIT LICENSE](LICENSE.md)
 
 ## Development
 
@@ -45,5 +46,3 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
-
-## License
