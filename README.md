@@ -1,4 +1,5 @@
-# Chemical Inventory Management System
+<h1 align="center"> Chemical Inventory Management System </h1> <br>
+
 ![LICENSE](https://img.shields.io/github/license/tharinduRE/cims-web-app)
 
 This is the web application for the chemical inventory management system 
