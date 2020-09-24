@@ -1,4 +1,5 @@
 # Chemical Inventory Management System
+![LICENSE](https://img.shields.io/github/license/tharinduRE/cims-web-app)
 
 This is the web application for the chemical inventory management system 
 
@@ -8,6 +9,8 @@ This is the web application for the chemical inventory management system
 
 All the backend operations handled by rest api provided here :
 [CIMS REST API](https://github.com/tharinduRE/cims-rest-api)
+
+## LICENSE
 
 ## Development
 
