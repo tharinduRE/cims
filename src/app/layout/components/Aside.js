@@ -1,5 +1,6 @@
 import React from "react";
-import { BsHouse, BsSearch ,BsApp,BsPlus} from "react-icons/bs";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { BsHouse, BsSearch, BsApp, BsPlus } from "react-icons/bs";
 import Brand from "./Brand";
 
 export default function Aside() {
@@ -17,14 +18,18 @@ export default function Aside() {
             data-container="body"
             data-boundary="window"
             title=""
-            data-original-title="Latest Projects"
           >
-            <a
-              href="/"
-              className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip id="tooltip-right">Search</Tooltip>}
             >
-              <BsSearch />
-            </a>
+              <a
+                href="/"
+                className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+              >
+                <BsSearch />
+              </a>
+            </OverlayTrigger>
           </li>
           <li className="nav-item mb-5">
             <a
