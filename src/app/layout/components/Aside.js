@@ -1,6 +1,5 @@
 import React from "react";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { BsHouse, BsSearch, BsApp, BsPlus } from "react-icons/bs";
+import AsideMenu from "./AsideMenu";
 import Brand from "./Brand";
 
 export default function Aside() {
@@ -10,52 +9,7 @@ export default function Aside() {
       <Brand />
       <div className="aside-nav d-flex flex-column align-items-center flex-column-fluid pt-7">
         {/* begin::Nav */}
-        <ul className="nav flex-column">
-          <li
-            className="nav-item mb-5"
-            data-toggle="tooltip"
-            data-placement="right"
-            data-container="body"
-            data-boundary="window"
-            title=""
-          >
-            <OverlayTrigger
-              placement="right"
-              overlay={<Tooltip id="tooltip-right">Search</Tooltip>}
-            >
-              <a
-                href="/"
-                className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
-              >
-                <BsSearch />
-              </a>
-            </OverlayTrigger>
-          </li>
-          <li className="nav-item mb-5">
-            <a
-              href="/home"
-              className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
-            >
-              <BsHouse />
-            </a>
-          </li>
-          <li className="nav-item mb-5">
-            <a
-              href="/item/2"
-              className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
-            >
-              <BsApp />
-            </a>
-          </li>
-          <li className="nav-item mb-5">
-            <a
-              href="/addItem"
-              className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
-            >
-              <BsPlus />
-            </a>
-          </li>
-        </ul>
+          <AsideMenu/>
         {/* end::Nav */}
       </div>
       {/* end::Nav Wrapper */}
