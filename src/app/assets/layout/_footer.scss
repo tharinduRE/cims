@@ -6,13 +6,6 @@
 @include media-breakpoint-up(lg) {
   .footer {
     // Fixed Footer Mode
-    position: fixed;
-    box-shadow: get($footer-config, fixed, shadow);
-    height: get($footer-config, fixed, height);
-    z-index: get($footer-config, fixed, z-index);
-    left: get($aside-config, base, width);
-    bottom: 0;
-    right: 0;
 
     .footer-fixed & {
       position: fixed;
