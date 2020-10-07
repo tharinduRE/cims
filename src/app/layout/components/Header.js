@@ -12,6 +12,7 @@ export default function Header() {
               src={process.env.PUBLIC_URL + "/images/logo-header-full.svg"}
               alt="header-logo"
               className="mh-80"
+              fluid
             />
           </div>
           <TopBar/>
