@@ -25,7 +25,7 @@ export default function Layout({ children }) {
             {/* <SearchSubHeader/> */}
 
             {/*begin::Content*/}
-            <div className="content d-flex flex-column flex-column-fluid">
+            <div className="content d-flex flex-column flex-column-fluid min-vh-100">
               <div className="d-flex flex-column-fluid">
                 <div className="container">
                     <div>{children}</div>

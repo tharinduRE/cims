@@ -103,11 +103,14 @@ export default function SearchPage() {
           <h3>Search Results</h3>
           <Col lg={6} className="ml-5">
             {searchResults.map((items, index) => (
-              <Card key={index} className="my-1">
-                <Card.Body className="p-5">
+              <Card key={index} className="my-2">
+                <Card.Body className="">
                   <Card.Title className="font-weight-bold">
                     {items.item.itemName}
                   </Card.Title>
+                  <Card.Subtitle>
+                    {items.item.casNumber}
+                  </Card.Subtitle>
                   <ListGroup className="ml-4 list-group-horizontal">
                     <ListGroupItem>
                       Store :{" "}
@@ -120,6 +123,12 @@ export default function SearchPage() {
                       Total Quantity :{" "}
                       <Badge className="badge bg-success">
                         {items.totalQuantity}
+                      </Badge>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      Item Capacity :{" "}
+                      <Badge className="badge bg-warning text-dark">
+                        {items.item.itemCapacity}
                       </Badge>
                     </ListGroupItem>
                   </ListGroup>

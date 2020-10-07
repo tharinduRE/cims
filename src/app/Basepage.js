@@ -1,7 +1,11 @@
-import React, {Suspense} from "react";
+import React from "react";
 import {Redirect, Route, Switch} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
+import AboutPage from "./pages/AboutPage"
+import AddNewItem from "./views/AddNewItem";
+import ItemView from "./views/ItemView";
+import ItemList from "./views/ItemList";
 
 export default function BasePage() {
     // useEffect(() => {
@@ -16,7 +20,13 @@ export default function BasePage() {
                 }
                 <Route path="/search" component={SearchPage}/>
                 <Route path="/home" component={HomePage}/>
-                <Redirect to="error/error-v1"/>
+                <Route path="/about" component={AboutPage} />
+
+                <Route path="/item/:id" component={ItemView}/>
+                <Route path="/addItem" component={AddNewItem}/>
+                <Route path="/listall" component={ItemList} />
+                
+                <Redirect to="error" />
             </Switch>
     );
 }
