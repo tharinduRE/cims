@@ -5,19 +5,12 @@ const get = (id) => {
 };
 
 const getAll = (store) => {
-  switch (store) {
-    case "ORG":
-      return axios.get("/item-stocks?stockStore.in=ORG");
-    case "INORG":
-      return axios.get("/item-stocks?stockStore.in=INORG");
-    default:
-      return axios.get(`/item-stocks/`);
-  }
+      return axios.get(`/item-stocks?size=5&stockStore.in=${store}`);
 };
 
 const getLowAll = (store, value) => {
   return axios.get(
-    `/item-stocks?stockStore.in=${store}&totalQuantity.lessThanOrEqual=${value}`
+    `/item-stocks?size=5&stockStore.in=${store}&totalQuantity.lessThanOrEqual=${value}`
   );
 };
 

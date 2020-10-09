@@ -1,9 +1,14 @@
 import axios from './Axios';
 
-const search = (q) => {
-    return axios.get(`http://localhost:8080/api/_search/item-stocks?query=${q}`)
+const searchByName = (q) => {
+    return axios.get(`/item-stocks?itemName.contains=${q}`)
+}
+
+const searchByCAS = (q) => {
+    return axios.get(`/item-stocks?casNumber.equals=${q}`)
 }
 
 export default {
-    search,
+    searchByName,
+    searchByCAS
 }
