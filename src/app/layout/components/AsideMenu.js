@@ -44,7 +44,7 @@ export default function AsideMenu() {
 
           <li className="nav-item mb-5">
             <a
-              href="/item/2"
+              href="/order"
               className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
             >
               <BsApp />
