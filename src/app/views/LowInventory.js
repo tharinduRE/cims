@@ -12,7 +12,7 @@ export default function LowInventory() {
   const stores = ["ORG", "INORG", "ACIDS", "NORM_GLASS", "Q_FIT_GLASS"];
 
   const [itemList, setItemList] = useState([]);
-  const [store, setStore] = useState([stores[0]]);
+  const [store, setStore] = useState([stores[1]]);
 
   const getItemList = (store) => {
     itemService
@@ -25,7 +25,7 @@ export default function LowInventory() {
       });
   };
 
-  const handleDropdown = (eventKey,evt) => {
+  const handleDropdown = (eventKey, evt) => {
     setStore(stores[eventKey]);
   };
 
@@ -35,8 +35,8 @@ export default function LowInventory() {
 
   return (
     <>
-    <div className="d-md-flex">
-    <DropdownButton
+      <div className="d-md-flex">
+        <DropdownButton
           title="Store"
           id="dropdown-menu-align-right"
           size="sm"
@@ -50,8 +50,7 @@ export default function LowInventory() {
             </Dropdown.Item>
           ))}
         </DropdownButton>
-    </div>
-        
+      </div>
 
       {itemList && itemList.length > 0 ? (
         <Table responsive>
@@ -59,9 +58,9 @@ export default function LowInventory() {
             <tr>
               <th>#</th>
               <th>Item Name</th>
-              <th>Store</th>
+              <th>Available In</th>
               <th>Total Quantity</th>
-              <th></th>
+              <th>Unit Price</th>
             </tr>
           </thead>
           <tbody>
@@ -69,24 +68,21 @@ export default function LowInventory() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
-                  {itemStock.item.itemName}
-                  <span className="text-muted font-weight-bold d-block">
-                    CAS : {itemStock.item.casNumber}
-                  </span>
+                  <div className="font-weight-bold">{itemStock.itemName}</div>
+                  <div className="d-flex">
+                    <span className="text-muted font-weight-bold">
+                      CAS : {itemStock.casNumber}
+                    </span>
+                    <span className="badge bg-primary">
+                      {itemStock.stockStore}
+                    </span>
+                  </div>
                 </td>
                 <td>
-                  <span className="badge d-block bg-primary">
-                    {itemStock.stockStore}
-                  </span>
+                  {itemStock.itemCapacity} {itemStock.storageUnitId}
                 </td>
-                <td>
-                  {itemStock.totalQuantity}
-                  <span className="text-muted font-weight-bold d-block">
-                    available in : {itemStock.item.itemCapacity}{" "}
-                    {itemStock.storageUnitId}
-                  </span>
-                </td>
-                <td>{itemStock.item.unitPrice}</td>
+                <td>{itemStock.totalQuantity}</td>
+                <td>{itemStock.unitPrice}</td>
                 <td>
                   <Button className="btn-sm btn-info font-weight-bolder">
                     {" "}

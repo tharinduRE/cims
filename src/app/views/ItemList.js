@@ -44,9 +44,9 @@ export default function ItemList() {
                   <tr key={index}>
                     <td>{index+1}</td>
                     <td>
-                      {itemStock.item.itemName}
+                      {itemStock.itemName}
                       <span className="text-muted font-weight-bold d-block">
-                        CAS : {itemStock.item.casNumber}
+                        CAS : {itemStock.casNumber}
                       </span>
                     </td>
                     <td>
@@ -57,13 +57,13 @@ export default function ItemList() {
                     <td>
                       {itemStock.totalQuantity}
                       <span className="text-muted font-weight-bold d-block">
-                        available in : {itemStock.item.itemCapacity}{" "}
+                        available in : {itemStock.itemCapacity}{" "}
                         {itemStock.storageUnitId}
                       </span>
                     </td>
-                    <td>{itemStock.item.unitPrice}</td>
+                    <td>{itemStock.unitPrice}</td>
                     <td>
-                      {itemStock.item.hazardCodes}{" "}
+                      {itemStock.hazardCodes}{" "}
                       <HazardLabel labels={[1, 2]} />
                     </td>
                   </tr>

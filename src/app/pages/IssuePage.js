@@ -6,7 +6,7 @@ export default function IssuePage() {
     return (
         <Row>
             <Col lg={4}>
-                <ItemIssue itemId={1}/>
+                <ItemIssue itemId={2}/>
             </Col>
         </Row>
     )

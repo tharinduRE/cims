@@ -1,19 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Form,
-  ListGroup,
-  ListGroupItem,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Dropdown, Form, Row } from "react-bootstrap";
 import searchService from "../service/searchService";
+import SearchCard from "../views/components/SearchCard";
 
-export default function SearchPage() {
+export default function SearchPage(params) {
   const [searchName, setsearchName] = useState("");
+  const [casNumber, setCasNumber] = useState(0);
 
   const [searchResults, setsearchResults] = useState([]);
 
@@ -24,7 +17,7 @@ export default function SearchPage() {
 
   const searchForItem = (params) => {
     searchService
-      .search(params)
+      .searchByName(params)
       .then((response) => {
         setsearchResults(response.data);
       })
@@ -34,7 +27,9 @@ export default function SearchPage() {
   };
 
   useEffect(() => {
-    searchForItem(searchName);
+    if (searchName) {
+      searchForItem(searchName);
+    }
   }, [searchName]);
 
   return (
@@ -47,17 +42,17 @@ export default function SearchPage() {
                 <h1 className="font-weight-bolder text-dark mb-0">
                   Search Inventory
                 </h1>
-                <div className="font-size-h4 mb-8">Get item availability</div>
                 <Form
                   className="d-flex flex-center py-2 px-6 bg-white rounded"
                   onSubmit={handleSearch}
                 >
                   <Row>
-                    <Col lg={6}>
+                    <Col lg={4}>
                       <Form.Control
                         type="text"
                         className="form-control border-0 font-weight-bold pl-2"
                         placeholder="Search by CAS Number"
+                        onChange={(e) => setCasNumber(e.target.value)}
                       ></Form.Control>
                       <span className="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
                     </Col>
@@ -71,6 +66,26 @@ export default function SearchPage() {
                         onChange={(e) => setsearchName(e.target.value)}
                       ></Form.Control>
                     </Col>
+                    <Col lg={2}>
+                      <Dropdown >
+                        <Dropdown.Toggle className="btn-light">
+                          Category
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item href="#/action-1">
+                            Action
+                          </Dropdown.Item>
+                          <Dropdown.Item href="#/action-2">
+                            Another action
+                          </Dropdown.Item>
+                          <Dropdown.Item href="#/action-3">
+                            Something else
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                      
+                    </Col>
+                    
                     <Col lg={2}>
                       <Button
                         type="submit"
@@ -98,48 +113,19 @@ export default function SearchPage() {
           </Card>
         </Col>
       </Row>
-      {searchResults.length !== 0 ? (
-        <Row className="mt-5 scroll">
-          <h3>Search Results</h3>
-          <Col lg={6} className="ml-5">
-            {searchResults.map((items, index) => (
-              <Card key={index} className="my-2">
-                <Card.Body className="">
-                  <Card.Title className="font-weight-bold">
-                    {items.item.itemName}
-                  </Card.Title>
-                  <Card.Subtitle>
-                    {items.item.casNumber}
-                  </Card.Subtitle>
-                  <ListGroup className="ml-4 list-group-horizontal">
-                    <ListGroupItem>
-                      Store :{" "}
-                      <Badge className="bg-info">{items.stockStore}</Badge>
-                      <Badge className="bg-light text-dark">
-                        {items.itemStatus}
-                      </Badge>
-                    </ListGroupItem>
-                    <ListGroupItem>
-                      Total Quantity :{" "}
-                      <Badge className="badge bg-success">
-                        {items.totalQuantity}
-                      </Badge>
-                    </ListGroupItem>
-                    <ListGroupItem>
-                      Item Capacity :{" "}
-                      <Badge className="badge bg-warning text-dark">
-                        {items.item.itemCapacity}
-                      </Badge>
-                    </ListGroupItem>
-                  </ListGroup>
-                </Card.Body>
-              </Card>
+      <Row className="mt-5 justify-content-md-center">
+        {searchResults.length > 0 ? (
+          <Col xl={8} className="px-lg-5">
+            <h3>Search Results</h3>
+
+            {searchResults.map((item, index) => (
+              <SearchCard key={index} item={item}/>
             ))}
           </Col>
-        </Row>
-      ) : (
-        <div>No search results</div>
-      )}
+        ) : (
+          <div>No search results</div>
+        )}
+      </Row>
     </>
   );
 }
