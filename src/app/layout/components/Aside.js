@@ -7,7 +7,7 @@ export default function Aside() {
     <div className="aside aside-left d-flex flex-column">
       {/* begin::Nav Wrapper */}
       <Brand />
-      <div className="aside-nav d-flex flex-column align-items-center flex-column-fluid pt-7">
+      <div className="aside-nav d-flex flex-column align-items-center scroll flex-column-fluid pt-7">
         {/* begin::Nav */}
           <AsideMenu/>
         {/* end::Nav */}

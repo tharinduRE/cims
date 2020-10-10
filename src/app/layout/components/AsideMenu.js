@@ -20,7 +20,7 @@ export default function AsideMenu() {
             > */}
         <NavLink
           to={{ pathname: "/search" }}
-          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg"
         >
           <BsSearch />
         </NavLink>
@@ -30,7 +30,7 @@ export default function AsideMenu() {
       <li className="nav-item mb-5">
         <NavLink
           to="/home"
-          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg"
         >
           <BsHouse />
         </NavLink>
@@ -46,8 +46,8 @@ export default function AsideMenu() {
 
       <li className="nav-item mb-5">
         <NavLink
-          to="/order"
-          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+          to="/issue"
+          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg"
         >
           <BsApp />
         </NavLink>
@@ -55,7 +55,7 @@ export default function AsideMenu() {
       <li className="nav-item mb-5">
         <NavLink
           to="/addItem"
-          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
+          className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg"
         >
           <BsPlus />
         </NavLink>
