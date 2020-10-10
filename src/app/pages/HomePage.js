@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import StatCard from "../views/components/StatCard";
+import ItemTransaction from "../views/ItemTransaction";
 import LowInventory from "../views/LowInventory";
 
 export default function HomePage() {
@@ -13,6 +14,14 @@ export default function HomePage() {
             <LowInventory />
           </Card.Body>
         </Card>
+
+        <Card className="my-5">
+          <Card.Body>
+            <h2 className="font-weight-bolder">Last Issued</h2>
+            <ItemTransaction />
+          </Card.Body>
+        </Card>
+
       </Col>
       <Col lg="4">
         <Card className="bg-primary shadow-sm text-white mb-5">
