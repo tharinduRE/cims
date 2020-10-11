@@ -1,17 +1,21 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Brand() {
   return (
     <>
-      <div className="aside-brand d-flex flex-column align-items-center flex-column-auto mh-100 py-lg-2 bg-white">
-        <a href="/">
+      <div className="aside-brand d-flex flex-column align-items-center flex-column-auto py-lg-2 bg-info" style={{height:"85px",}}>
+        <Link to="/">
+          <div className="d-flex" >
           <img
             src={process.env.PUBLIC_URL + "/images/pera-logo.png"}
-            width="80"
+            width="70px"
             alt="brand-logo"
-            className="max-h-80"
+            className="img-fluid"
           />
-        </a>
+          </div>
+         
+        </Link>
       </div>
     </>
   );
