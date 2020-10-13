@@ -7,7 +7,7 @@ export default function Header() {
     <>
       <div className="header bg-white header-fixed">
         <div className="container-fluid d-flex align-items-stretch justify-content-between">
-          <div className="d-flex align-items-strtch">
+          <div className="d-flex align-items-strtch py-2">
             <Image
               src={process.env.PUBLIC_URL + "/images/logo-header-full.svg"}
               alt="header-logo"

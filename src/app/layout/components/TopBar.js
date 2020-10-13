@@ -2,18 +2,22 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 
 export default function TopBar() {
+
+  const handleSelect = (e) => {
+    console.log(e);
+  }
+  
   return (
     <div className="topbar">
       <div className="topbar-item mr-3">
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown onSelect={handleSelect}>
+          <Dropdown.Toggle variant="light" id="dropdown-basic">
             Logout
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            <Dropdown.Item eventKey={1}>Settings</Dropdown.Item>            
+            <Dropdown.Item eventKey={2}>Logout</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       </div>

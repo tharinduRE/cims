@@ -37,7 +37,7 @@ export default function AsideMenu() {
       </li>
       <li className="nav-item mb-5">
         <NavLink
-          to="/listall"
+          to="/browse"
           className="nav-link btn btn-icon btn-clean btn-icon-white btn-lg active"
         >
           <BsList />

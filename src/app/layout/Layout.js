@@ -14,7 +14,7 @@ export default function Layout({ children }) {
         {/*begin::Page*/}
         <div className="d-flex flex-row flex-column page">
 
-          <IconContext.Provider value={{color:"white",size:"1.5em"}}>
+          <IconContext.Provider value={{color:"white",size:"1.5em",className:"svg-icon"}}>
             <Aside />
           </IconContext.Provider>
           
