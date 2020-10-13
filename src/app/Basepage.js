@@ -3,10 +3,10 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SearchPage from "./pages/SearchPage";
 import AboutPage from "./pages/AboutPage"
-import ItemList from "./views/ItemList";
 import ImportPage from "./pages/ImportPage";
 import IssuePage from "./pages/IssuePage";
 import SplashScreen from "./layout/SplashScreen"
+import Browse from "./pages/BrowsePage";
 
 export default function BasePage() {
 
@@ -22,7 +22,7 @@ export default function BasePage() {
                 <Route path="/addItem" component={ImportPage}/>
                 <Route path="/issue" component={IssuePage}/>
 
-                <Route path="/browse" component={ItemList} />
+                <Route path="/browse" component={Browse} />
                 
                 <Redirect to="error" />
             </Switch>
