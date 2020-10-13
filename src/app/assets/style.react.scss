@@ -13,5 +13,9 @@
 // 2: Bootstrap/Material framework includes
 @import "~bootstrap/scss/bootstrap";
 
+// 4: Plugins
+@import "~react-toastify/dist/ReactToastify.css";
+
 // 5: Layout
 @import "layout/init";
+

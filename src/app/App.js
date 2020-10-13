@@ -1,15 +1,17 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./Routes";
 import SplashScreen from "./layout/SplashScreen";
+import { ToastContainer } from "react-toastify";
 
 function App({ store }) {
   return (
-    <Suspense fallback={<SplashScreen/>}>
+    <React.Suspense fallback={<SplashScreen/>}>
       <BrowserRouter>
         <Routes />
+        <ToastContainer />
       </BrowserRouter>
-    </Suspense>
+    </React.Suspense>
   );
 }
 
