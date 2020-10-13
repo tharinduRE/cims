@@ -1,13 +1,18 @@
 
 import React from "react";
+import { Button } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 export function ErrorPage() {
   return (
     <div className="d-flex flex-column flex-root">
       <div
-        className="d-flex flex-row-fluid flex-column p-10 p-sm-30"
+        className="d-flex flex-row-fluid flex-column p-10 p-sm-30 min-vh-100"
         style={{
-          backgroundImage: `url(${ process.env.PUBLIC_URL + ("/error/bg6.jpg")})`
+          backgroundImage: `url(${ process.env.PUBLIC_URL + ("/error/bg6.jpg")})`,
+          backgroundSize:"auto",
+          backgroundPositionX:"center",
+          backgroundPositionY:"bottom",
         }}
       >
         <h1
@@ -19,6 +24,7 @@ export function ErrorPage() {
         <p className="font-size-h3 font-weight-light">
           OOPS! Something went wrong here
         </p>
+        <NavLink to="/"><Button variant="info">Go Back</Button></NavLink>
       </div>
     </div>
   );

@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Button, Card, Col, Dropdown, Form, Row } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 import searchService from "../service/searchService";
 import SearchCard from "../views/components/SearchCard";
 
-export default function SearchPage(params) {
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+export default function SearchPage(props) {
   const [searchName, setsearchName] = useState("");
   const [casNumber, setCasNumber] = useState(0);
+
+  const query = useQuery().get("q");
 
   const [searchResults, setsearchResults] = useState([]);
 
@@ -15,9 +22,9 @@ export default function SearchPage(params) {
     setsearchName(e.target.value);
   };
 
-  const searchForItem = (params) => {
+  const searchForItem = (name) => {
     searchService
-      .searchByName(params)
+      .searchByName(name)
       .then((response) => {
         setsearchResults(response.data);
       })
@@ -27,10 +34,14 @@ export default function SearchPage(params) {
   };
 
   useEffect(() => {
+    if (query != null) {
+      searchForItem(query);
+    }
+
     if (searchName) {
       searchForItem(searchName);
     }
-  }, [searchName]);
+  },[searchName, query]);
 
   return (
     <>
@@ -67,7 +78,7 @@ export default function SearchPage(params) {
                       ></Form.Control>
                     </Col>
                     <Col lg={2}>
-                      <Dropdown >
+                      <Dropdown>
                         <Dropdown.Toggle className="btn-light">
                           Category
                         </Dropdown.Toggle>
@@ -83,9 +94,8 @@ export default function SearchPage(params) {
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
-                      
                     </Col>
-                    
+
                     <Col lg={2}>
                       <Button
                         type="submit"
@@ -115,11 +125,11 @@ export default function SearchPage(params) {
       </Row>
       <Row className="mt-5 justify-content-md-center">
         {searchResults.length > 0 ? (
-          <Col xl={8} className="px-lg-5">
+          <Col md={8} className="px-lg-5">
             <h3>Search Results</h3>
 
             {searchResults.map((item, index) => (
-              <SearchCard key={index} item={item}/>
+              <SearchCard key={index} item={item} />
             ))}
           </Col>
         ) : (

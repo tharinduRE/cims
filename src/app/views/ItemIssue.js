@@ -3,7 +3,7 @@ import { Form, Button, Col, Row, Card, FormControl } from "react-bootstrap";
 import itemService from "../service/itemService";
 import transactionService from "../service/transactionService";
 
-export default function ItemIssue({ itemId }) {
+export default function ItemIssue({ itemId, onComplete }) {
   const [itemStock, setitemStock] = useState([]);
   const [quantity, setquantity] = useState(0);
 
@@ -32,7 +32,7 @@ export default function ItemIssue({ itemId }) {
   const sendIssueRequest = (q) => {
     const payload = {
       ...issue,
-      quantity: q,
+      quantity: -Math.abs(q),
     };
     transactionService
       .postTransaction(payload)
@@ -101,7 +101,7 @@ export default function ItemIssue({ itemId }) {
             <Button variant="dark" type="submit">
               Issue
             </Button>
-            <Button variant="clear"> Cancel </Button>
+            <Button variant="clear" onClick={onComplete}> Cancel </Button>
           </Form>
         </Card.Body>
       </Card>

@@ -1,10 +1,14 @@
-import React from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 import StatCard from "../views/components/StatCard";
 import ItemTransaction from "../views/ItemTransaction";
 import LowInventory from "../views/LowInventory";
+import ItemUpdate from '../views/ItemUpdate';
 
 export default function HomePage() {
+
+  const [showModel, setShowModel] = useState(false);
+
   return (
     <Row>
       <Col lg="8">
@@ -28,9 +32,23 @@ export default function HomePage() {
           <Card.Body>
             <Card.Title>Overview</Card.Title>
             Welcome to chemical inventory and management system
+            <div className="d-flex mt-3">
+            <Button variant="outline-dark" onClick={() => setShowModel(true)}>Add New Item</Button>
+            </div>
           </Card.Body>
         </Card>
 
+        <Modal
+        show={showModel}
+        onHide={() => setShowModel(false)}
+        dialogClassName="modal-90w"
+        animation={false}
+        aria-labelledby="add-item-dialog"
+      >
+        <Modal.Body className="p-0">
+          <ItemUpdate onComplete={() => setShowModel(false)}/>
+        </Modal.Body>
+      </Modal>
         <StatCard />
 
         <Card className="card card-custom gutter-b bg-secondary">

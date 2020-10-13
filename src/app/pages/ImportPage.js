@@ -6,7 +6,7 @@ export default function ImportPage() {
   return (
     <Row>
       <Col lg={4}>
-          <ItemUpdate/>
+          <ItemUpdate />
       </Col>
     </Row>
   )

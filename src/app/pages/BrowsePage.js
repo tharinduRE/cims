@@ -16,7 +16,16 @@ import ItemIssue from "../views/ItemIssue";
 import ItemUpdate from "../views/ItemUpdate";
 
 export default function Browse() {
-  const stores = ["ORG", "INORG", "ACIDS", "NORM_GLASS",];
+  const storeList = [
+    { code: "ORG", name: "Organic" },
+    { code: "INORG", name: "Inorganic" },
+    { code: "ACIDS", name: "Acids" },
+    { code: "NORM_GLASS", name: "Normal Glassware" },
+    { code: "Q_FIT_GLASS", name: "Quick Fit Glassware" },
+    { code: "ORG_USED", name: "Organic Used" },
+    { code: "INORG_USED", name: "InOrganic Used" }
+  ];
+
   const [itemList, setItemList] = useState([]);
   const [store, setStore] = useState("ORG");
   const [showModel, setShowModel] = useState({
@@ -44,7 +53,7 @@ export default function Browse() {
     itemService
       .deleteOne(id)
       .then((response) => {
-        console.log(response);
+        setShowModel({ show: false });
       })
       .catch((err) => {
         console.log(err);
@@ -58,23 +67,28 @@ export default function Browse() {
   return (
     <Row>
       <Col lg={2}>
-          <Row>
-            { stores.map((stores,index) => (
-              <Col className="my-2" key={index}>
-              <Button  variant="light" className="d-block px-5 py-2" as="a" onClick={()=> setStore(stores)}>
-                <span className="d-block text-dark-75 font-weight-bold mt-2"><h5>{stores}</h5></span>
-                <span className="d-block text-muted font-weight-bold">Store</span>
+        <Row>
+          {storeList.map((store, index) => (
+            <Col className="my-2" key={index}>
+              <Button
+                variant="light"
+                className="d-block px-5 py-2"
+                as="a"
+                onClick={() => setStore(store.code)}
+              >
+                <span className="d-block text-dark-75 font-weight-bold mt-2">
+                  <h5>{store.name}</h5>
+                </span>
               </Button>
             </Col>
-            ))}
-            
-          </Row>
+          ))}
+        </Row>
       </Col>
       <Col lg={10}>
         {itemList && itemList.length > 0 ? (
           <Card>
             <Card.Body>
-              <Table striped bordered hover responsive>
+              <Table striped hover>
                 <thead>
                   <tr>
                     <th>#</th>
@@ -82,7 +96,7 @@ export default function Browse() {
                     <th>Store</th>
                     <th>Total Quantity</th>
                     <th>Unit Price</th>
-                    <th>Hazard Codes</th>
+                    <th>Hazard Category</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -105,7 +119,7 @@ export default function Browse() {
                           available in : {itemStock.itemCapacity} {itemStock.storageUnitId}
                         </span>
                       </td>
-                      <td>{itemStock.unitPrice}</td>
+                      <td>Rs. {itemStock.unitPrice.toFixed(2)}</td>
                       <td>
                         {itemStock.hazardCodes} <HazardLabel labels={[1, 2]} />
                       </td>
@@ -182,8 +196,20 @@ export default function Browse() {
                     </Card.Body>
                   </Card>
                 ),
-                edit: <ItemUpdate update />,
-                issue: <ItemIssue itemId={showModel.id} />,
+                edit: (
+                  <ItemUpdate
+                    onComplete={() => setShowModel({ show: false })}
+                    id={showModel.id}
+                    update
+                    popUp
+                  />
+                ),
+                issue: (
+                  <ItemIssue
+                    onComplete={() => setShowModel({ show: false })}
+                    itemId={showModel.id}
+                  />
+                ),
               }[showModel.type]
             }
           </Modal.Body>
