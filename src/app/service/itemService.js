@@ -22,10 +22,21 @@ const add = (data) => {
   return axios.post(`/item-stocks/`, data);
 };
 
+const deleteOne = (id) => {
+  return axios.delete(`/item-stocks/${id}`)
+}
+
+const update = (data) => {
+  return axios.put(`/item-stocks/`,data)
+}
+
+
 export default {
   get,
   getAll,
   count,
   getLowAll,
   add,
+  deleteOne,
+  update,
 };
