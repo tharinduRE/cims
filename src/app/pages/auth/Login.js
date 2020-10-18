@@ -8,8 +8,13 @@ export default function Login() {
 
     const payload = {
         user: {
-            userName: "Tharindu P.",
+            id:1,
+            authStores:["ORG","INORG"],
+            authRoles : ["ROLE_ADMIN","ROLE_USER"],
+            firstName: "Tharindu",
+            lastName: "Premasiri",
             postTitle: "Admin",
+            email: "admin@system.com",
             department: "Department of Chemistry",
         },
         token: 12314,

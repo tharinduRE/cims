@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Login from "./Login";
+import SignUp from "./SignUp";
 import LoginHelp from "./LoginHelp";
 
 export default function Auth() {
@@ -24,7 +25,7 @@ export default function Auth() {
 
                             <Switch>
                                 <Route path="/auth/login" component={Login} />
-                                <Route path="/auth/register" />
+                                <Route path="/auth/register" component={SignUp}/>
                                 <Route path="/auth/login-help" component={LoginHelp}/>
 
                                 <Redirect from="/auth" exact={true} to="/auth/login" />

@@ -4,13 +4,22 @@ const get = (id) => {
   return axios.get(`/item-stocks/${id}`);
 };
 
+/* const sendAPIrequest = async (request) => {
+  try {
+    const res = await request;
+    console.log(res);
+  } catch (err) {
+     console.log(err)
+  }
+} */
+
 const getAll = (store) => {
       return axios.get(`/item-stocks?size=5&stockStore.in=${store}`);
 };
 
 const getLowAll = (store, value) => {
   return axios.get(
-    `/item-stocks?size=5&stockStore.in=${store}&totalQuantity.lessThanOrEqual=${value}`
+    `/item-stocks?size=5&stockStore.in=${store}&tot alQuantity.lessThanOrEqual=${value}`
   );
 };
 

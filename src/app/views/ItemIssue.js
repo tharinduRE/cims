@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Col, Row, Card, FormControl } from "react-bootstrap";
 import itemService from "../service/itemService";
 import transactionService from "../service/transactionService";
+import { AuthContext } from "../pages/auth/AuthProvider";
 
 export default function ItemIssue({ itemId, onComplete }) {
   const [itemStock, setitemStock] = useState([]);
   const [quantity, setquantity] = useState(0);
 
+  const { state: authState } = React.useContext(AuthContext);
+
   const issue = {
     itemStockId: itemId,
+    createdById: authState.user.id,
     quantity: 0,
     transactionType: "ISSUE",
   };
@@ -53,9 +57,7 @@ export default function ItemIssue({ itemId, onComplete }) {
       <Card>
         <Card.Header className="border-0">
           <Card.Title>
-            <h3 className="card-label font-size-h3 font-weight-bolder text-dark">
-              Issue a item
-            </h3>
+            <h3 className="card-label font-size-h3 font-weight-bolder text-dark">Issue a item</h3>
             <span className="text-muted mt-5 font-weight-bolder font-size-lg">
               Issue item from inventory
             </span>
@@ -73,14 +75,11 @@ export default function ItemIssue({ itemId, onComplete }) {
             <Row className="mb-8">
               <Col>
                 <h5>
-                  Available Quantity :
-                  <span className="text-muted">{itemStock.totalQuantity} </span>{" "}
+                  Available Quantity :<span className="text-muted">{itemStock.totalQuantity} </span>{" "}
                 </h5>
               </Col>
               <Col>
-                <span className="badge badge-light text dark">
-                  {itemStock.itemCapacity}
-                </span>
+                <span className="badge badge-light text dark">{itemStock.itemCapacity}</span>
               </Col>
             </Row>
             <Row className="mb-8">
@@ -101,7 +100,10 @@ export default function ItemIssue({ itemId, onComplete }) {
             <Button variant="dark" type="submit">
               Issue
             </Button>
-            <Button variant="clear" onClick={onComplete}> Cancel </Button>
+            <Button variant="clear" onClick={onComplete}>
+              {" "}
+              Cancel{" "}
+            </Button>
           </Form>
         </Card.Body>
       </Card>
