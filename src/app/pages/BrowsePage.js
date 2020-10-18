@@ -7,6 +7,7 @@ import {
   Col,
   Dropdown,
   Modal,
+  Nav,
   Row,
   Table,
 } from "react-bootstrap";
@@ -14,20 +15,18 @@ import itemService from "../service/itemService";
 import HazardLabel from "../views/components/HazardLabel";
 import ItemIssue from "../views/ItemIssue";
 import ItemUpdate from "../views/ItemUpdate";
+import { AuthContext } from "./auth/AuthProvider";
+import {getStoreName} from '../_helpers/StoreNameHelper'
 
 export default function Browse() {
-  const storeList = [
-    { code: "ORG", name: "Organic" },
-    { code: "INORG", name: "Inorganic" },
-    { code: "ACIDS", name: "Acids" },
-    { code: "NORM_GLASS", name: "Normal Glassware" },
-    { code: "Q_FIT_GLASS", name: "Quick Fit Glassware" },
-    { code: "ORG_USED", name: "Organic Used" },
-    { code: "INORG_USED", name: "InOrganic Used" }
-  ];
+
+  const { state: authState } = React.useContext(AuthContext);
+
+  const stores = authState.user.authStores;
 
   const [itemList, setItemList] = useState([]);
-  const [store, setStore] = useState("ORG");
+  const [updated, setUpdated] = useState(false);
+  const [store, setStore] = useState(stores[0]);
   const [showModel, setShowModel] = useState({
     show: false,
     id: 1,
@@ -60,34 +59,39 @@ export default function Browse() {
       });
   };
 
+  const onUpdate = () => {
+    setShowModel({ show: false });
+    setUpdated(true);
+  };
+
   useEffect(() => {
+    if (updated) {
+      getItemList(store);
+    }
     getItemList(store);
-  }, [store]);
+  }, [store, updated]);
 
   return (
     <Row>
-      <Col lg={2}>
-        <Row>
-          {storeList.map((store, index) => (
-            <Col className="my-2" key={index}>
-              <Button
-                variant="light"
-                className="d-block px-5 py-2"
-                as="a"
-                onClick={() => setStore(store.code)}
-              >
-                <span className="d-block text-dark-75 font-weight-bold mt-2">
-                  <h5>{store.name}</h5>
-                </span>
-              </Button>
-            </Col>
-          ))}
-        </Row>
-      </Col>
-      <Col lg={10}>
-        {itemList && itemList.length > 0 ? (
-          <Card>
-            <Card.Body>
+      <Col lg={12}>
+        <Card className="card-custom">
+          <Card.Header className="mx-3">
+            <Nav variant="tabs" as="ul" className="nav-bold nav-tabs-line nav-tabs-line-3x">
+              {stores.map((str, index) => (
+                <Nav.Item key={index} as="li" className="mr-3">
+                  <Nav.Link
+                    onClick={() => setStore(str)}
+                    className={str === store ? "active" : " "}
+                  >
+                    <span className="nav-text">{getStoreName(str)}</span>
+                  </Nav.Link>
+                </Nav.Item>
+              ))}
+            </Nav>
+          </Card.Header>
+
+          <Card.Body>
+            {itemList && itemList.length > 0 ? (
               <Table striped hover>
                 <thead>
                   <tr>
@@ -114,14 +118,16 @@ export default function Browse() {
                         <span className="badge d-block bg-primary">{itemStock.stockStore}</span>
                       </td>
                       <td>
-                        {itemStock.totalQuantity}
+                        <span className="text-center">{itemStock.totalQuantity}</span>
                         <span className="text-muted font-weight-bold d-block">
-                          available in : {itemStock.itemCapacity} {itemStock.storageUnitId}
+                          Available in : {itemStock.itemCapacity} {itemStock.storageUnit}
                         </span>
                       </td>
                       <td>Rs. {itemStock.unitPrice.toFixed(2)}</td>
                       <td>
-                        {itemStock.hazardCodes} <HazardLabel labels={[1, 2]} />
+                        {itemStock.hazardCodes.map((hCode, idx) => (
+                          <HazardLabel key={idx} labels={[hCode.hazardCode]} />
+                        ))}
                       </td>
                       <td>
                         <Dropdown className="d-inline">
@@ -167,11 +173,11 @@ export default function Browse() {
                   ))}
                 </tbody>
               </Table>
-            </Card.Body>
-          </Card>
-        ) : (
-          <Alert className="alert alert-warning">No Item Stocks found</Alert>
-        )}
+            ) : (
+              <Alert className="alert alert-warning">No Item Stocks found</Alert>
+            )}
+          </Card.Body>
+        </Card>
 
         <Modal
           show={showModel.show}
@@ -196,20 +202,8 @@ export default function Browse() {
                     </Card.Body>
                   </Card>
                 ),
-                edit: (
-                  <ItemUpdate
-                    onComplete={() => setShowModel({ show: false })}
-                    id={showModel.id}
-                    update
-                    popUp
-                  />
-                ),
-                issue: (
-                  <ItemIssue
-                    onComplete={() => setShowModel({ show: false })}
-                    itemId={showModel.id}
-                  />
-                ),
+                edit: <ItemUpdate onComplete={() => onUpdate()} id={showModel.id} update popUp />,
+                issue: <ItemIssue onComplete={() => onUpdate()} itemId={showModel.id} />,
               }[showModel.type]
             }
           </Modal.Body>

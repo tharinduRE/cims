@@ -4,19 +4,20 @@ import {
   Button,
   Col,
   Row,
-  ButtonToolbar,
-  ToggleButtonGroup,
-  ToggleButton,
   Card,
   Alert,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import itemService from "../service/itemService";
 import utilSerivice from "../service/utilService";
+import {AuthContext} from '../pages/auth/AuthProvider'
+import {getStoreName} from '../_helpers/StoreNameHelper'
 
 export default function ItemUpdate({ id, update, onComplete, popUp }) {
-  const stores = ["ORG", "INORG", "ACIDS", "NORM_GLASS"];
-  const [measUnit, setmeasUnit] = useState([]);
+
+  const { state: authState } = React.useContext(AuthContext);
+
+  const stores = authState.user.authStores;  const [measUnit, setmeasUnit] = useState([]);
 
   const notify = () => toast.success("Updated!");
 
@@ -170,17 +171,19 @@ export default function ItemUpdate({ id, update, onComplete, popUp }) {
                   Enter full item name as appeared in container
                 </Form.Text>
               </Form.Group>
-              <Row className="my-5">
-                <ButtonToolbar onChange={() => handleInputChange}>
-                  <ToggleButtonGroup name="stockStore" value={itemStock.stockStore}>
-                    {stores.map((store, index) => (
-                      <ToggleButton key={index} value={store}>
-                        {store}
-                      </ToggleButton>
-                    ))}
-                  </ToggleButtonGroup>
-                </ButtonToolbar>
-              </Row>
+              <Form.Group className="my-5">
+              <Form.Label>Item Store</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="stockStore"
+                      onChange={handleInputChange}
+                      value={itemStock.stockStore}
+                    >
+                      {stores.map((store, idx) => (
+                        <option key={idx}>{getStoreName(store)}</option>
+                      ))}
+                    </Form.Control>
+              </Form.Group>
               <Row>
                 <Col>
                   <Form.Group controlId="exampleForm.ControlInput1">
