@@ -3,10 +3,14 @@ import { Form, Button, Col, Row, Card, FormControl } from "react-bootstrap";
 import itemService from "../service/itemService";
 import transactionService from "../service/transactionService";
 import { AuthContext } from "../pages/auth/AuthProvider";
+import { toast } from "react-toastify";
 
 export default function ItemIssue({ itemId, onComplete }) {
   const [itemStock, setitemStock] = useState([]);
   const [quantity, setquantity] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+
+  const notify = () => toast.success("Item Issued!");
 
   const { state: authState } = React.useContext(AuthContext);
 
@@ -42,6 +46,7 @@ export default function ItemIssue({ itemId, onComplete }) {
       .postTransaction(payload)
       .then((response) => {
         console.log(response.data);
+        setSubmitted(true);
       })
       .catch((err) => {
         console.log(err);
@@ -49,8 +54,12 @@ export default function ItemIssue({ itemId, onComplete }) {
   };
 
   useEffect(() => {
+    if (submitted) {
+      onComplete(true);
+      notify();
+    }
     getItem(itemId);
-  }, [itemId]);
+  }, [itemId,submitted,onComplete]);
 
   return (
     <>
