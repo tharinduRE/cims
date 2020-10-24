@@ -16,13 +16,15 @@ import HazardLabel from "../views/components/HazardLabel";
 import ItemIssue from "../views/ItemIssue";
 import ItemUpdate from "../views/ItemUpdate";
 import { AuthContext } from "./auth/AuthProvider";
-import {getStoreName} from '../_helpers/StoreNameHelper'
+import { getStoreName } from "../_helpers/StoreNameHelper";
+import { toast } from "react-toastify";
 
 export default function Browse() {
-
   const { state: authState } = React.useContext(AuthContext);
 
   const stores = authState.user.authStores;
+
+  const notify = (msg) => toast.success(msg);
 
   const [itemList, setItemList] = useState([]);
   const [updated, setUpdated] = useState(false);
@@ -59,9 +61,10 @@ export default function Browse() {
       });
   };
 
-  const onUpdate = () => {
+  const onUpdate = (msg) => {
     setShowModel({ show: false });
     setUpdated(true);
+    notify(msg);
   };
 
   useEffect(() => {
@@ -203,7 +206,13 @@ export default function Browse() {
                   </Card>
                 ),
                 edit: <ItemUpdate onComplete={() => onUpdate()} id={showModel.id} update popUp />,
-                issue: <ItemIssue onComplete={() => onUpdate()} itemId={showModel.id} />,
+                issue: (
+                  <ItemIssue
+                    onComplete={() => onUpdate("Item Issued")}
+                    onCancel={() => setShowModel({ show: false })}
+                    itemId={showModel.id}
+                  />
+                ),
               }[showModel.type]
             }
           </Modal.Body>
