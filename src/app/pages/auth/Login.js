@@ -23,7 +23,7 @@ export default function Login() {
   };
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email().required(),
     password: Yup.string().required("required"),
   });
 
