@@ -3,10 +3,9 @@ import { Button, Card, Col, Modal, Row } from "react-bootstrap";
 import StatCard from "../views/components/StatCard";
 import ItemTransaction from "../views/ItemTransaction";
 import LowInventory from "../views/LowInventory";
-import ItemUpdate from '../views/ItemUpdate';
+import ItemUpdate from "../views/ItemUpdate";
 
 export default function HomePage() {
-
   const [showModel, setShowModel] = useState(false);
 
   return (
@@ -14,7 +13,10 @@ export default function HomePage() {
       <Col lg="8">
         <Card>
           <Card.Body>
-            <h2 className="font-weight-bolder">Low Inventory</h2>
+            <Card.Title>
+              <h2 className="font-weight-bolder">Low Inventory</h2>
+              <span className="text-muted">Items reached minimum quantity</span>
+            </Card.Title>
             <LowInventory />
           </Card.Body>
         </Card>
@@ -25,7 +27,6 @@ export default function HomePage() {
             <ItemTransaction />
           </Card.Body>
         </Card>
-
       </Col>
       <Col lg="4">
         <Card className="bg-primary shadow-sm text-white mb-5">
@@ -33,31 +34,31 @@ export default function HomePage() {
             <Card.Title>Overview</Card.Title>
             Welcome to chemical inventory and management system
             <div className="d-flex mt-3">
-            <Button variant="outline-dark" onClick={() => setShowModel(true)}>Add New Item</Button>
+              <Button variant="outline-dark" onClick={() => setShowModel(true)}>
+                Add New Item
+              </Button>
             </div>
           </Card.Body>
         </Card>
 
         <Modal
-        show={showModel}
-        onHide={() => setShowModel(false)}
-        dialogClassName="modal-90w"
-        animation={false}
-        aria-labelledby="add-item-dialog"
-      >
-        <Modal.Body className="p-0">
-          <ItemUpdate onComplete={() => setShowModel(false)}/>
-        </Modal.Body>
-      </Modal>
+          show={showModel}
+          onHide={() => setShowModel(false)}
+          dialogClassName="modal-90w"
+          animation={false}
+          aria-labelledby="add-item-dialog"
+        >
+          <Modal.Body className="p-0">
+            <ItemUpdate onComplete={() => setShowModel(false)} />
+          </Modal.Body>
+        </Modal>
         <StatCard />
 
         <Card className="card card-custom gutter-b bg-secondary">
           <Card.Body className="card-body">
             <div className="d-flex align-items-center justify-content-between p-4 flex-lg-wrap flex-xl-nowrap">
               <div className="d-flex flex-column mr-5">
-                <h4 className="text-dark text-hover-primary mb-5">
-                  Get In Touch
-                </h4>
+                <h4 className="text-dark text-hover-primary mb-5">Get In Touch</h4>
                 <p className="text-dark-50">
                   Your feedback is always welcome to improve this application
                 </p>
