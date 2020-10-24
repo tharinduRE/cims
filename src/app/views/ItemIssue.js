@@ -3,14 +3,11 @@ import { Form, Button, Col, Row, Card, FormControl } from "react-bootstrap";
 import itemService from "../service/itemService";
 import transactionService from "../service/transactionService";
 import { AuthContext } from "../pages/auth/AuthProvider";
-import { toast } from "react-toastify";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
-export default function ItemIssue({ itemId, onComplete }) {
+export default function ItemIssue({ itemId, onComplete,onCancel }) {
   const [itemStock, setitemStock] = useState([]);
-  const [quantity, setquantity] = useState(0);
-  const [submitted, setSubmitted] = useState(false);
-
-  const notify = () => toast.success("Item Issued!");
 
   const { state: authState } = React.useContext(AuthContext);
 
@@ -19,11 +16,6 @@ export default function ItemIssue({ itemId, onComplete }) {
     createdById: authState.user.id,
     quantity: 0,
     transactionType: "ISSUE",
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    sendIssueRequest(quantity);
   };
 
   const getItem = (id) => {
@@ -46,7 +38,7 @@ export default function ItemIssue({ itemId, onComplete }) {
       .postTransaction(payload)
       .then((response) => {
         console.log(response.data);
-        setSubmitted(true);
+        onComplete(true);
       })
       .catch((err) => {
         console.log(err);
@@ -54,12 +46,14 @@ export default function ItemIssue({ itemId, onComplete }) {
   };
 
   useEffect(() => {
-    if (submitted) {
-      onComplete(true);
-      notify();
-    }
     getItem(itemId);
-  }, [itemId,submitted,onComplete]);
+  }, [itemId]);
+
+  const schema = Yup.object().shape({
+    quantity: Yup.number()
+      .required("quantity")
+      .max(itemStock.totalQuantity, "Quantity must be less than or equal to total"),
+  });
 
   return (
     <>
@@ -73,47 +67,61 @@ export default function ItemIssue({ itemId, onComplete }) {
           </Card.Title>
         </Card.Header>
         <Card.Body className="pt-0">
-          <Form onSubmit={handleSubmit}>
-            <Row className="my-5">
-              <Col>
-                <h2>
-                  Item : <span>{itemStock.itemName}</span>
-                </h2>
-              </Col>
-            </Row>
-            <Row className="mb-8">
-              <Col>
-                <h5>
-                  Available Quantity :<span className="text-muted">{itemStock.totalQuantity} </span>{" "}
-                </h5>
-              </Col>
-              <Col>
-                <span className="badge badge-light text dark">{itemStock.itemCapacity}</span>
-              </Col>
-            </Row>
-            <Row className="mb-8">
-              <Col></Col>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Quantity : </Form.Label>
-                  <FormControl
-                    type="number"
-                    placeholder="Quantity"
-                    value={quantity}
-                    onChange={(e) => setquantity(e.target.value)}
-                  ></FormControl>
-                </Form.Group>
-              </Col>
-            </Row>
+          <Formik
+            validationSchema={schema}
+            initialValues={{
+              quantity: 1,
+            }}
+            enableReinitialize={true}
+            onSubmit={(values) => {
+              sendIssueRequest(values.quantity);
+            }}
+          >
+            {({ handleSubmit, handleChange, handleReset, values, errors }) => (
+              <Form onSubmit={handleSubmit}>
+                <Row className="my-5">
+                  <Col>
+                    <h2>
+                      Item : <span>{itemStock.itemName}</span>
+                    </h2>
+                  </Col>
+                </Row>
+                <Row className="mb-8">
+                  <Col>
+                    <h5>
+                      Available Quantity :
+                      <span className="text-muted">{itemStock.totalQuantity} </span>{" "}
+                    </h5>
+                  </Col>
+                  <Col>
+                    <span className="badge badge-light text dark">{itemStock.itemCapacity}</span>
+                  </Col>
+                </Row>
+                <Row className="mb-8">
+                  <Col></Col>
+                  <Col>
+                    <Form.Group>
+                      <Form.Label>Quantity : </Form.Label>
+                      <FormControl
+                        name="quantity"
+                        type="number"
+                        placeholder="Quantity"
+                        value={values.quantity}
+                        onChange={handleChange}
+                        isInvalid={errors.quantity}
+                      ></FormControl>
+                      <FormControl.Feedback type="invalid">{errors.quantity}</FormControl.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
 
-            <Button variant="dark" type="submit">
-              Issue
-            </Button>
-            <Button variant="clear" onClick={onComplete}>
-              {" "}
-              Cancel{" "}
-            </Button>
-          </Form>
+                <Button variant="dark" type="submit">
+                  Issue
+                </Button>
+                <Button variant="clear" onClick={onCancel}>Cancel</Button>
+              </Form>
+            )}
+          </Formik>
         </Card.Body>
       </Card>
     </>
