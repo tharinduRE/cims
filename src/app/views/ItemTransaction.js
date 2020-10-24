@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Badge, Table } from "react-bootstrap";
 import transactionService from "../service/transactionService";
-import moment from "moment";
+import { formatDate, timeAgo } from "../_helpers/DateFormatHelper";
 
 export default function ItemTransaction() {
     const [itemList, setItemList] = useState([]);
@@ -54,12 +54,10 @@ export default function ItemTransaction() {
                                 <td>{Math.abs(transaction.quantity)}</td>
                                 <td>
                                     <span>
-                                        {moment(transaction.transactionDate).format(
-                                            "MMM Do YY, h:mm a"
-                                        )}
+                                       {formatDate(transaction.transactionDate)}
                                     </span>
                                     <span className="d-flex text-muted">
-                                        {moment(transaction.transactionDate).fromNow()}
+                                        {timeAgo(transaction.transactionDate)}
                                     </span>
                                 </td>
                             </tr>

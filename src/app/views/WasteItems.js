@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Table } from "react-bootstrap";
-import moment from "moment";
+import {format} from "date-fns";
 import axios from "../service/Axios";
 
 export default function WasteItems() {
@@ -47,7 +47,7 @@ export default function WasteItems() {
                 <td>{item.itemCapacity}</td>
                 <td>{item.itemQuantity}</td>
                 <td>
-                  <span>{moment(item.lastUpdated).format("MMM Do YY, h:mm a")}</span>
+                  <span>{format(new Date(item.lastUpdated), 'do MMM yy, hh:mm aaaa')}</span>
                 </td>
               </tr>
             ))}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Table } from "react-bootstrap";
-import moment from "moment";
 import axios from "../service/Axios";
+import { formatDate, timeAgo } from "../_helpers/DateFormatHelper";
 
 function base64ToBlob(base64) {
   const binaryString = window.atob(base64);
@@ -57,8 +57,8 @@ export default function ReportHistory({reload}) {
                 <td>{report.createdBy}</td>
 
                 <td>
-                  <span>{moment(report.createdOn).format("MMM Do YY, h:mm a")}</span>
-                  <span className="d-flex text-muted">{moment(report.createdOn).fromNow()}</span>
+                  <span>{formatDate(report.createdOn)}</span>
+                  <span className="d-flex text-muted">{timeAgo(report.createdOn)}</span>
                 </td>
                 <td>
                   {report.report ? (

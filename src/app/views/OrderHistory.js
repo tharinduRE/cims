@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Table } from "react-bootstrap";
-import moment from "moment";
 import axios from "../service/Axios";
+import { formatDate } from "../_helpers/DateFormatHelper";
 
 export default function OrderHistory({ status }) {
   const [orderList, setorderList] = useState([]);
@@ -52,9 +52,9 @@ export default function OrderHistory({ status }) {
                 <td>{order.requestedBy}</td>
                 <td>
                   <span>
-                    {moment(
+                    {formatDate(
                       { PENDING: order.requestDate, COMPLETED: order.orderDate }[status]
-                    ).format("MMM Do YY, h:mm a")}
+                    )}
                   </span>
                 </td>
               </tr>

@@ -1,4 +1,3 @@
-import moment from "moment";
 import React, { useState } from "react";
 import { Badge, Button, Card, Col, Collapse, Row, Table } from "react-bootstrap";
 import {
@@ -9,6 +8,7 @@ import {
   BsReplyAllFill,
 } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../_helpers/DateFormatHelper";
 
 export default function ResultCard({ item, showModel }) {
   const [open, setOpen] = useState(false);
@@ -82,7 +82,7 @@ export default function ResultCard({ item, showModel }) {
                     <td>
                       {item.lastUpdated === null
                         ? "N/A"
-                        : moment(item.lastUpdated).format("MMM Do YY, h:mm a")}
+                        : formatDate(item.lastUpdated)}
                     </td>
                     <td>
                       <Link className="btn btn-outline-primary btn-sm" to={`/item/edit/${item.id}`}>
