@@ -1,71 +1,118 @@
-import React, { useState } from "react";
-import { Button, Col,Form, Row } from "react-bootstrap";
+import React, { Fragment, useEffect, useState } from "react";
+import { Badge, Button, Form } from "react-bootstrap";
+import { AsyncTypeahead } from "react-bootstrap-typeahead";
+import { BsFillGridFill, BsSearch } from "react-icons/bs";
 import { Link, useHistory } from "react-router-dom";
+import searchService from "../../service/searchService";
 
 export default function SearchSubHeader() {
-
-  const [query, setquery] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState([]);
+  const [searchValue, setsearchValue] = useState("");
   const history = useHistory();
 
-  const handleSearch = (e) => {
+  const handleSearch = (query) => {
+    setIsLoading(true);
+
+    searchService
+      .searchByName(query)
+      .then((response) => {
+        setResults(response.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleResults = (e) => {
     e.preventDefault();
-    if(query.length > 0){
-      history.push("/search?q="+query);
+    if (searchValue) {
+      history.push("/search?q=" + searchValue);
     }
   };
-  
-  const handleInputChange = (e) => {
-     setquery(e.target.value);
-  };
+
+  // Bypass client-side filtering by returning `true`. Results are already
+  // filtered by the search endpoint, so no need to do it again.
+  const filterBy = () => true;
+
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      history.push("/search?q=" + searchValue);
+    }
+  }, [searchValue, history]);
 
   return (
     <div
       className="subheader gutter-b subheader-transparent"
       style={{
         backgroundColor: "#512788",
-        height:"85px"
+        height: "85px",
       }}
     >
-      <div className="d-flex flex-column flex-lg-row-auto w-auto w-lg-350px w-xl-450px w-xxl-650px py-2 px-10 px-md-20 pr-lg-0">
-        <Form
-          className="d-flex flex-center py-2 px-6 bg-white rounded"
-          onSubmit={handleSearch}
-        >
-          <Row>
-            <Col lg={4}>
-              <Form.Control
-                type="text"
-                className="form-control border-0 font-weight-bold pl-2"
-                placeholder="Search by CAS Number"
-              ></Form.Control>
-              <span className="bullet bullet-ver h-25px d-none d-sm-flex mr-2"></span>
-            </Col>
+      <div className="container d-flex flex-column">
+        <div className="d-flex align-items-md-center mb-2 flex-column flex-md-row">
+          <div className="bg-white rounded p-3 d-flex flex-grow-1 flex-sm-grow-0">
+            <Form
+              className=" d-flex align-items-md-center flex-sm-row flex-column flex-grow-1 flex-sm-grow-0"
+              onSubmit={handleResults}
+            >
+              <div className="d-flex align-items-center py-3 py-sm-0 px-sm-3">
+                <BsSearch />
+                <AsyncTypeahead
+                  filterBy={filterBy}
+                  id="async-example"
+                  isLoading={isLoading}
+                  labelKey="itemName"
+                  minLength={3}
+                  clearButton={true}
+                  className="w-350px"
+                  onChange={(arr) => {
+                    Array.isArray(arr) && arr.length
+                      ? setsearchValue(arr[0].itemName)
+                      : setsearchValue("");
+                  }}
+                  onSearch={handleSearch}
+                  renderInput={({ inputRef, referenceElementRef, ...inputProps }) => (
+                    <Form.Control
+                      {...inputProps}
+                      className="border-0 font-weight-bold pl-2"
+                      ref={(node) => {
+                        inputRef(node);
+                        referenceElementRef(node);
+                      }}
+                    />
+                  )}
+                  options={results}
+                  placeholder="Search for a Inventory Item..."
+                  renderMenuItemChildren={(result) => (
+                    <Fragment>
+                      <span>
+                        {result.itemName}{" "}
+                        <Badge variant="light">
+                          {result.itemCapacity}
+                          {result.storageUnit}
+                        </Badge>
+                      </span>
+                    </Fragment>
+                  )}
+                />
+              </div>
+              <Button as={Link} to="/browse" variant="light">
+                {" "}
+                <BsFillGridFill /> Browse
+              </Button>
 
-            <Col lg={4}>
-              <Form.Control
-                type="text"
-                className="form-control border-0 font-weight-bold pl-2"
-                placeholder="Search by Name"
-                onChange={handleInputChange}
-              ></Form.Control>
-            </Col>
-            <Col lg={2}>
-              <Link to="/browse">
-              <Button variant="light">Browse</Button>
-              </Link>
-            </Col>
-
-            <Col lg={2}>
               <Button
                 type="submit"
-                className="btn btn-dark font-weight-bold btn-hover-light-primary mt-3 mt-sm-0 px-7"
+                variant="dark"
+                className="font-weight-bold btn-hover-light-primary mt-3 mt-sm-0 px-7 mx-3"
               >
                 Search
               </Button>
-            </Col>
-          </Row>
-        </Form>
+            </Form>
+          </div>
+        </div>
       </div>
     </div>
   );
