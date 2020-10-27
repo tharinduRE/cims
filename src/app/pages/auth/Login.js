@@ -4,22 +4,17 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "./AuthProvider";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import fetchApi from "../../service/Axios";
 
 export default function Login() {
   const { dispatch } = React.useContext(AuthContext);
 
-  const payload = {
-    user: {
-      id: 1,
-      authStores: ["ORG", "INORG"],
-      authRoles: ["ROLE_ADMIN", "ROLE_USER"],
-      firstName: "Tharindu",
-      lastName: "Premasiri",
-      postTitle: "Admin",
-      email: "admin@system.com",
-      department: "Department of Chemistry",
-    },
-    token: 12314,
+  const AUTH_TOKEN_KEY = "authToken";
+
+  const loginPayload = {
+    email: "admin@system.com",
+    password: "admin",
+    rememberMe: false,
   };
 
   const LoginSchema = Yup.object().shape({
@@ -27,9 +22,25 @@ export default function Login() {
     password: Yup.string().required("required"),
   });
 
-  const handleLogin = (values) => {  
-      console.log(values);
-    dispatch({ type: "LOGIN", payload: payload });
+  const getSession = async () => {
+    const response = await fetchApi.get(`/account`);
+    const user = response.data;
+    dispatch({ type: "LOGIN", payload: {user : user }});
+  };
+
+  const handleLogin = async (values, rememberMe) => {
+    const res = await fetchApi.post(`/authenticate`, loginPayload);
+    const bearerToken = res.headers.authorization;
+    if (bearerToken && bearerToken.slice(0, 7) === "Bearer ") {
+      const jwt = bearerToken.slice(7, bearerToken.length);
+      if (rememberMe) {
+        localStorage.setItem(AUTH_TOKEN_KEY, jwt);
+      } else {
+        sessionStorage.setItem(AUTH_TOKEN_KEY, jwt);
+      }
+    }
+
+    await getSession();
   };
 
   return (
@@ -42,10 +53,10 @@ export default function Login() {
       </div>
       <Formik
         validationSchema={LoginSchema}
-        initialValues={{ email: "admin@system.com", password: "12345" }}
-        onSubmit={(values) => handleLogin(values)}
+        initialValues={{ email: "admin@system.com", password: "admin" }}
+        onSubmit={(values) => handleLogin(values, false)}
       >
-        {({ handleSubmit, handleChange, handleBlur, values, touched, isValid, errors }) => (
+        {({ handleSubmit, handleChange, values, touched, isValid, errors }) => (
           <Form noValidate onSubmit={handleSubmit}>
             <Form.Group>
               <Form.Control

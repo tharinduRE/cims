@@ -2,7 +2,10 @@ import React, { useReducer } from "react";
 
 export const AuthContext = React.createContext();
 
+const AUTH_TOKEN_KEY = "authToken";
+
 const AuthProvider = ({ children }) => {
+
     const initialState = {
         user: null,
         token: null,
@@ -12,7 +15,6 @@ const AuthProvider = ({ children }) => {
         switch (action.type) {
             case "LOGIN":
                 localStorage.setItem("user", JSON.stringify(action.payload.user));
-                localStorage.setItem("token", JSON.stringify(action.payload.token));
                 return {
                     ...state,
                     user: action.payload.user,
@@ -20,6 +22,7 @@ const AuthProvider = ({ children }) => {
                 };
             case "LOGOUT":
                 localStorage.clear();
+                clearAuthToken();
                 return {
                     ...state,
                     user: null,
@@ -41,5 +44,15 @@ const AuthProvider = ({ children }) => {
 
     return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
 };
+
+
+export const clearAuthToken = () => {
+    if (localStorage.getItem(AUTH_TOKEN_KEY)) {
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+    if (sessionStorage.getItem(AUTH_TOKEN_KEY)) {
+      sessionStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+  };
 
 export default AuthProvider;
