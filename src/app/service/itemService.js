@@ -1,7 +1,7 @@
-import axios from "./Axios";
+import fetchApi from "./Axios";
 
 const get = (id) => {
-  return axios.get(`/item-stocks/${id}`);
+  return fetchApi.get(`/item-stocks/${id}`);
 };
 
 /* const sendAPIrequest = async (request) => {
@@ -14,29 +14,29 @@ const get = (id) => {
 } */
 
 const getAll = (store) => {
-      return axios.get(`/item-stocks?size=5&stockStore.in=${store}`);
+      return fetchApi.get(`/item-stocks?size=5&stockStore.in=${store}`);
 };
 
 const getLowAll = (store, value) => {
-  return axios.get(
+  return fetchApi.get(
     `/item-stocks?size=5&stockStore.in=${store}&tot alQuantity.lessThanOrEqual=${value}`
   );
 };
 
 const count = (store) => {
-  return axios.get(`/item-stocks/count?stockStore.in=${store}`);
+  return fetchApi.get(`/item-stocks/count?stockStore.in=${store}`);
 };
 
 const add = (data) => {
-  return axios.post(`/item-stocks/`, data);
+  return fetchApi.post(`/item-stocks/`, data);
 };
 
 const deleteOne = (id) => {
-  return axios.delete(`/item-stocks/${id}`)
+  return fetchApi.delete(`/item-stocks/${id}`)
 }
 
 const update = (data) => {
-  return axios.put(`/item-stocks/`,data)
+  return fetchApi.put(`/item-stocks/`,data)
 }
 
 

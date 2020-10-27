@@ -1,14 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Image, Row } from "react-bootstrap";
 import FormFileInput from "react-bootstrap/esm/FormFileInput";
 import { BsPen } from "react-icons/bs";
 import { AuthContext } from "../auth/AuthProvider";
-import { getStoreName } from "../../_helpers/StoreNameHelper";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import fetchApi from "../../service/Axios";
 
 export default function UserProfile() {
   const { state: AuthState } = React.useContext(AuthContext);
+
+  const [stores, setStores] = useState([]);
+
+  const getStores = async () => {
+    const response = await fetchApi.get(`/inv-stores`);
+    setStores(response.data);
+  };
 
   const authUser = AuthState.user;
 
@@ -25,6 +32,9 @@ export default function UserProfile() {
     passwordConfirmation: Yup.string().oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
 
+  useEffect(() => {
+    getStores();
+  }, []);
   return (
     <>
       <Row className="justify-content-center">
@@ -133,11 +143,18 @@ export default function UserProfile() {
                         Autherized Stores
                       </Form.Label>
                       <Col sm={6}>
-                        <Form.Control as="select" htmlSize={3} readOnly custom>
-                          {values.authStores.map((store, index) => (
-                            <option key={index}>{getStoreName(store)}</option>
-                          ))}
-                        </Form.Control>
+                        {stores.map((store, index) => (
+                          <Form.Check
+                            inline
+                            key={index}
+                            name="authStores"
+                            value={store.id}
+                            type="checkbox"
+                            onChange={handleChange}
+                            disabled={authUser.authorities.includes("ROLE_ADMIN") ? false : true}
+                            label={store.name}
+                          />
+                        ))}
                       </Col>
                     </Form.Group>
                     <div className="separator separator-dashed mb-5"></div>
@@ -192,7 +209,6 @@ export default function UserProfile() {
                         <Form.Control.Feedback type="invalid">
                           {errors.passwordConfirmation}
                         </Form.Control.Feedback>
-
                       </Col>
                     </Form.Group>
 

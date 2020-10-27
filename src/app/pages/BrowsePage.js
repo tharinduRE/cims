@@ -16,7 +16,6 @@ import HazardLabel from "../views/components/HazardLabel";
 import ItemIssue from "../views/ItemIssue";
 import ItemUpdate from "../views/ItemUpdate";
 import { AuthContext } from "./auth/AuthProvider";
-import { getStoreName } from "../_helpers/StoreNameHelper";
 import { toast } from "react-toastify";
 
 export default function Browse() {
@@ -28,7 +27,7 @@ export default function Browse() {
 
   const [itemList, setItemList] = useState([]);
   const [updated, setUpdated] = useState(false);
-  const [store, setStore] = useState(stores[0]);
+  const [store, setStore] = useState(stores[0].code);
   const [showModel, setShowModel] = useState({
     show: false,
     id: 1,
@@ -83,10 +82,10 @@ export default function Browse() {
               {stores.map((str, index) => (
                 <Nav.Item key={index} as="li" className="mr-3">
                   <Nav.Link
-                    onClick={() => setStore(str)}
+                    onClick={() => setStore(str.code)}
                     className={str === store ? "active" : " "}
                   >
-                    <span className="nav-text">{getStoreName(str)}</span>
+                    <span className="nav-text">{str.name}</span>
                   </Nav.Link>
                 </Nav.Item>
               ))}
