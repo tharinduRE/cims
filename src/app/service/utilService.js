@@ -4,6 +4,4 @@ const getMeasUnits = () => {
     return axios.get(`meas-units`)
 }
 
-export default {
-    getMeasUnits,
-}
+export default getMeasUnits;

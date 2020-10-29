@@ -14,7 +14,7 @@ const get = (id) => {
 } */
 
 const getAll = (store) => {
-      return fetchApi.get(`/item-stocks?size=5&stockStore.in=${store}`);
+  return fetchApi.get(`/item-stocks?size=5&stockStore.in=${store}`);
 };
 
 const getLowAll = (store, value) => {
@@ -32,15 +32,14 @@ const add = (data) => {
 };
 
 const deleteOne = (id) => {
-  return fetchApi.delete(`/item-stocks/${id}`)
-}
+  return fetchApi.delete(`/item-stocks/${id}`);
+};
 
 const update = (data) => {
-  return fetchApi.put(`/item-stocks/`,data)
-}
+  return fetchApi.put(`/item-stocks/`, data);
+};
 
-
-export default {
+const methods = {
   get,
   getAll,
   count,
@@ -49,3 +48,4 @@ export default {
   deleteOne,
   update,
 };
+export default methods;

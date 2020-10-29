@@ -8,7 +8,9 @@ const searchByCAS = (q) => {
     return axios.get(`/item-stocks?casNumber.equals=${q}`)
 }
 
-export default {
+const methods = {
     searchByName,
     searchByCAS
 }
+
+export default methods;

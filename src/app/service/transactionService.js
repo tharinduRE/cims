@@ -8,7 +8,9 @@ const postTransaction = (data) => {
     return axios.post(`/item-transactions`,data);
 }
 
-export default {
+const methods =  {
     getAllIssues,
     postTransaction,
 }
+
+export default methods;
