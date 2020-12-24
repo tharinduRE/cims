@@ -1,0 +1,54 @@
+//
+// Main Styles
+//
+
+
+////////////////////////////////////////////////////////////////
+///////////// DO NOT MODIFY BELOW INCLUDE ORDER ////////////////
+////////////////////////////////////////////////////////////////
+
+// 1: Initialize
+@import "init";
+
+// 2: Bootstrap/Material framework includes
+@import "~bootstrap/scss/bootstrap";
+@import "vendors/material-ui/general";
+
+// 3: Components
+@import
+"components/utilities/background",
+"components/utilities/flex",
+"components/utilities/opacity",
+"components/utilities/borders",
+"components/utilities/sizing",
+"components/utilities/position",
+"components/utilities/text",
+"components/utilities/icon",
+"components/alert",
+"components/card",
+"components/buttons",
+"components/nav",
+"components/navi",
+"components/svg-icon",
+"components/image-input",
+"components/label",
+"components/modal",
+"components/forms",
+"components/separator",
+"components/symbol",
+"components/pagination",
+"components/table",
+"components/scrolltop",
+"components/utilities/icon";
+
+// 4: Plugins
+@import
+"vendors/plugins/perfect-scrollbar",
+"vendors/plugins/sweetalert2",
+"~react-toastify/dist/ReactToastify.css",
+"~react-bootstrap-typeahead/css/Typeahead.css";
+
+
+// 5: Layout
+@import "layout/init";
+
