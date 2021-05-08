@@ -1,3 +1,3 @@
-cd ../cims-backend
-./mvnw -Pprod verify jib:dockerBuild
+cd ../backend
+./mvnw -Pprod,swagger jib:dockerBuild -Dmaven.test.skip=true
 
