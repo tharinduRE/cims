@@ -1,13 +1,23 @@
 import React from "react";
 import { Card, Modal } from "react-bootstrap";
 import { BsApp } from "react-icons/bs";
+import { useHistory } from "react-router-dom";
 
-export default function MadalCard({ icon, title, subtitle, children,variant }) {
+export default function ModalCard({ icon, title, subtitle, children,variant }) {
   const Icon = (Icon) => {
     return <Icon/>
   }
+  const [show, setShow] = React.useState(true);
+
+  const history = useHistory();
+
+  const handleClose = () => {
+    setShow(false)
+    history.goBack();
+  };
 
   return (
+    <Modal show={show} onHide={handleClose} animation={false}>
       <Card>
         <Modal.Header className="border-0 pb-0">
           <div className="d-flex align-items-center">
@@ -22,6 +32,8 @@ export default function MadalCard({ icon, title, subtitle, children,variant }) {
         </Modal.Header>
         
         <Card.Body>{children}</Card.Body>
-      </Card>      
+      </Card>
+    </Modal>
+      
   );
 }

@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Form, Button, Col, Row, FormControl, Spinner } from "react-bootstrap";
-import itemService from "./ItemCrud";
-import { AuthContext } from "../../pages/auth/AuthProvider";
 import { Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, FormControl, Row, Spinner } from "react-bootstrap";
+import itemService from "../item/ItemCrud";
+import orderService from "./OrderCrud";
 import * as Yup from "yup";
-import Axios from "../../service/Axios";
+import { AuthContext } from "../../pages/auth/AuthProvider";
 import { useHistory, useParams } from "react-router-dom";
-import ModelICard from "../../components/Modal-ICard";
+import ModalICard from "../../components/Modal-ICard";
 
-export default function ItemIssue({ onComplete }) {
-  const [itemStock, setitemStock] = useState([]);
-
+export default function OrderForm() {
   const { state: authState } = React.useContext(AuthContext);
+  const user = authState.user;
 
-  let { id } = useParams();
+  const [item, setItem] = useState([]);
+
+  const { id } = useParams();
+  const itemId = id;
+  const getItem = async (id) => {
+    const res = await itemService.get(id);
+    if (res) setItem(res.data);
+  };
 
   const history = useHistory();
 
@@ -21,45 +27,32 @@ export default function ItemIssue({ onComplete }) {
     history.goBack();
   };
 
-  const issue = {
-    itemStockId: id,
-    createdById: authState.user.id,
-    quantity: 0,
-    transactionType: "ISSUE",
-  };
-
-  const getItem = async (id) => {
-    const res = await itemService.get(id);
-    if (res) setitemStock(res.data);
-  };
-
-  const sendIssueRequest = async(q) => {
+  const sendOrderRequest = async (values) => {
     const payload = {
-      ...issue,
-      quantity: -Math.abs(q),
+      ...values,
+      itemStockId: item.id,
+      orderStatus: "PENDING",
+      requestedById: user.id,
     };
-    const res = await Axios.post("/transactions", payload)
-    return res; 
+    const res = await orderService.create(payload);
+    if (res.status === 201) {
+      cancel();
+    }
   };
-
-  useEffect(() => {
-    getItem(id);
-  }, [id]);
 
   const schema = Yup.object().shape({
-    quantity: Yup.number()
-      .required("quantity")
-      .max(itemStock.totalQuantity, "Quantity must be less than or equal to total"),
+    quantity: Yup.number().required("quantity"),
   });
 
+  useEffect(() => {
+    getItem(itemId);
+  }, [itemId]);
+
   return (
-    <ModelICard
-      title="Issue Item"
-      iconField={`${itemStock.itemCapacity}${itemStock.storageUnit}`}
-      nameField={itemStock.itemName}
-      nameSubField={`${
-        itemStock.totalQuantity !== 0 ? `Available : ${itemStock.totalQuantity}` : "Not Available"
-      }`}
+    <ModalICard
+      title="Order Item"
+      nameField={item.itemName}
+      nameSubField={`In : ${item.itemCapacity}${item.storageUnit}`}
     >
       <Formik
         validationSchema={schema}
@@ -67,8 +60,8 @@ export default function ItemIssue({ onComplete }) {
           quantity: 1,
         }}
         enableReinitialize={true}
-        onSubmit={async(values) => {
-          await sendIssueRequest(values.quantity);
+        onSubmit={async (values) => {
+          await sendOrderRequest(values);
         }}
       >
         {({ handleSubmit, handleChange, isSubmitting, values, errors }) => (
@@ -91,13 +84,8 @@ export default function ItemIssue({ onComplete }) {
               </Col>
             </Form.Group>
 
-            <Button
-              variant="dark"
-              type="submit"
-              disabled={isSubmitting || itemStock.totalQuantity === 0}
-              block
-            >
-              Issue
+            <Button variant="dark" type="submit" disabled={isSubmitting} block>
+              Order
               {isSubmitting ? (
                 <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
               ) : (
@@ -110,6 +98,6 @@ export default function ItemIssue({ onComplete }) {
           </Form>
         )}
       </Formik>
-    </ModelICard>
+    </ModalICard>
   );
 }

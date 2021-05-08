@@ -32,7 +32,7 @@ export default function ReportsTable() {
             return (
               <Button
                 as="a"
-                href={value}
+                href={"/data/reports/" + value}
                 target="_blank"
                 download={row.name}
                 size="sm"
@@ -46,6 +46,6 @@ export default function ReportsTable() {
       ];
     
       return (
-        <BTablePagination columns={columns} dataUrl={`/reports?size=3&sort=createdOn%2Cdesc`} />
+        <BTablePagination columns={columns} dataUrl={`/reports?size=5&sort=createdOn%2Cdesc`} />
       );
 }

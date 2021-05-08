@@ -7,7 +7,7 @@ import {
   BsHouse,
   BsSearch,
 } from "react-icons/bs";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import AboutPage from "./pages/AboutPage";
 import Browse from "./pages/BrowsePage";
 import HomePage from "./pages/HomePage";
@@ -19,6 +19,10 @@ import WasteStore from "./pages/WasteStore";
 import ItemUpdate from "./views/item/ItemUpdate";
 import UserPage from "./views/user/UserPage";
 import ItemLowPage from './pages/ItemLowPage';
+import ItemIssue from "./views/item/ItemIssue";
+import OrderForm from "./views/order/OrderForm";
+import ItemView from "./views/item/ItemView";
+import VendorForm from "./views/waste/VendorForm";
 
 export const routes = [
   {
@@ -42,7 +46,7 @@ export const routes = [
     component: ReportsPage,
     sideMenu: {
       icon: BsFileText,
-      index: 50,
+      index: 90,
     },
   },
   {
@@ -78,16 +82,40 @@ export const routes = [
     component: IssuePage,
   },
   {
-    path: "/items/edit/:id",
+    path: "/items/add",
     component: ItemUpdate,
+    modal:true,
   },
   {
-    path: "/items/issue/:id",
-    component: IssuePage,
+    path: "/items/view/:id",
+    component: ItemView,
+    modal:true,
+  },
+  {
+    path: "/items/edit/:id",
+    component: ItemUpdate,
+    modal:true,
+  },
+  
+  {
+    path: "/items/:id/issue",
+    component: ItemIssue,
+    modal:true,
   },
   {
     path: "/items/:id/order",
-    component: ItemUpdate,
+    component: OrderForm,
+    modal:true,
+  },
+  {
+    path: "/items/:id/order/new",
+    component: OrderForm,
+    modal:true,
+  },
+  {
+    path: "/waste/vendor/new",
+    component: VendorForm,
+    modal:true,
   },
   {
     path: "/about",
@@ -103,19 +131,42 @@ function NavRoute(route) {
   return (
     <Route
       path={route.path}
+      children={(props) => <route.component {...props} routes={route.routes} />}
+    />
+  );
+}
+
+function ModalRoute(route,background) {
+  return (
+    background && <Route
+      path={route.path}
       render={(props) => <route.component {...props} routes={route.routes} />}
     />
   );
 }
 
+
 export default function NavRoutes() {
+  let location = useLocation();
+  let background = location.state && location.state.background;
+
   return (
-    <Switch>
-      <Redirect exact from="/" to="/home" />
-      {routes.map((route, i) => (
-        <NavRoute key={i} {...route} />
-      ))}
-      <Redirect to="error" />
-    </Switch>
+    <>
+      <Switch location={background || location}>
+        <Redirect exact from="/" to="/home" />
+        {routes
+          .filter((route) => !route.modal)
+          .map((route, i) => (
+            <NavRoute key={i} {...route} />
+          ))}
+          <Route path="*">
+            <Redirect to="/error" />
+          </Route>
+      </Switch>
+      {routes.map((route, i) => {
+        if (route.modal) return <ModalRoute key={i} {...route} background={background} />;
+        return null;
+      })}
+    </>
   );
 }

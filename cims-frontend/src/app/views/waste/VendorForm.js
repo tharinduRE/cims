@@ -1,14 +1,29 @@
-import React from 'react'
-import { BsGem } from 'react-icons/bs'
-import FormCard from '../../components/FormCard'
+import { Formik } from "formik";
+import React from "react";
+import { Form } from "react-bootstrap";
+import ModalCard from "../../components/ModalCard";
 
 export default function VendorForm() {
-    return (
-      <FormCard
-        title="Waste Chemical Vendor"
-        subtitle="Manage vendors who recieve waste products"
-        icon={BsGem}
-        variant="dark"
-      ></FormCard>
-    );
+  const schema = {};
+  return (
+    <ModalCard>
+      <Formik
+        validationSchema={schema}
+        initialValues={{
+          store: "",
+        }}
+        onSubmit
+      >
+        {({
+          handleSubmit,
+          handleChange,
+          setFieldValue,
+          isSubmitting,
+          errors,
+          touched,
+          isValid,
+        }) => <Form noValidate onSubmit={handleSubmit}></Form>}
+      </Formik>
+    </ModalCard>
+  );
 }

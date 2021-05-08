@@ -14,10 +14,11 @@ import utilSerivice from "../../service/utilService";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Typeahead } from "react-bootstrap-typeahead";
-import FormCard from "../../components/FormCard";
 import { authStoreList } from "../../_helpers/AuthStoreHelper";
+import { useHistory, useParams } from "react-router-dom";
+import ModalCard from "../../components/ModalCard";
 
-export default function ItemUpdate({ id, update, onCancel, order }) {
+export default function ItemUpdate () {
   const authStores = authStoreList();
   const [measUnit, setmeasUnit] = useState([]);
   const [itemStock, setitemStock] = useState({
@@ -31,6 +32,15 @@ export default function ItemUpdate({ id, update, onCancel, order }) {
   });
   const [submitted, setSubmitted] = useState(false);
 
+  const history = useHistory();
+
+  const cancel = (e) => {
+    history.goBack();
+  };
+
+  let { id } = useParams();
+  const update = id;
+  
   const getItem = (id) => {
     itemService
       .get(id)
@@ -58,7 +68,7 @@ export default function ItemUpdate({ id, update, onCancel, order }) {
       ...values,
       container: 1,
       store: {
-        id: values.store.id,
+        id: values.store,
       },
     };
 
@@ -99,7 +109,7 @@ export default function ItemUpdate({ id, update, onCancel, order }) {
   });
 
   return (
-    <FormCard title="Add new item">
+    <ModalCard title="Add new item">
       <Formik
         validationSchema={schema}
         initialValues={itemStock}
@@ -142,7 +152,6 @@ export default function ItemUpdate({ id, update, onCancel, order }) {
                   labelKey="name"
                   name="stockStore"
                   placeholder="Select item category"
-                  defaultInputValue={values.store}
                   clearButton
                   options={authStores}
                   onChange={(s) => {
@@ -253,13 +262,12 @@ export default function ItemUpdate({ id, update, onCancel, order }) {
                 ""
               )}
             </Button>
-            <Button variant="clear" onClick={onCancel} block>
-              {" "}
-              Cancel{" "}
+            <Button variant="clear" onClick={()=>cancel()} block>
+              Cancel
             </Button>
           </Form>
         )}
       </Formik>
-    </FormCard>
+    </ModalCard>
   );
 }

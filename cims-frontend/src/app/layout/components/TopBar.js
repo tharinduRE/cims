@@ -1,8 +1,10 @@
 import React from "react";
-import { Button, Dropdown, Image } from "react-bootstrap";
-import { BsBell, BsBoxArrowInRight } from "react-icons/bs";
+import { Dropdown, Image } from "react-bootstrap";
+import { BsBoxArrowInRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../pages/auth/AuthProvider";
+import NotifyCenter from "./NotifyCenter";
+import {toAbsoluteUrl} from '../../_helpers/AssetsHelpers';
 
 export default function TopBar() {
   const { state: authState } = React.useContext(AuthContext);
@@ -22,7 +24,7 @@ export default function TopBar() {
                 {user.postTitle}
               </span>
             </div>
-            <Image src={ user.avatarUrl} width={50} height={50} roundedCircle />
+            <Image src={user.avatarUrl || toAbsoluteUrl('/images/avatar.svg')} width={50} height={50} roundedCircle />
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
@@ -35,10 +37,8 @@ export default function TopBar() {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className="topbar-item mr-3" size="md">
-        <Button variant="link">
-          <BsBell size="1.5rem" />
-        </Button>
+      <div className="topbar-item mr-5" size="md">
+        <NotifyCenter/>
       </div>
       <div className="topbar-item mr-3">
         <Dropdown>

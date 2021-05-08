@@ -1,31 +1,22 @@
-import React, { useState } from "react";
-import { Badge, Modal } from "react-bootstrap";
+import React from "react";
+import { Badge } from "react-bootstrap";
 import BTablePagination from "../../components/table/BTablePagination";
-import actionColumnFormatter from "./actionColumnFormatter";
+import actionFormatter from "./actionFormatter";
 import { formatDate } from "../../_helpers/DateFormatHelper";
-import ItemDelete from "./ItemDelete";
-import ItemIssue from "./ItemIssue";
-import ItemUpdate from "./ItemUpdate";
 
 export default function ItemsTable({ store }) {
-  const [showModel, setShowModel] = useState({
-    show: false,
-    id: 1,
-    type: "delete",
-  });
-
   const columns = React.useMemo(
     () => [
       {
         Header: "Product Name",
         accessor: "itemName",
-        Cell: ({ row, value }) => {
+        Cell: ({ value }) => {
           return (
             <div>
               <span className="font-weight-bolder">{value}</span>
-              <span className="text-muted font-weight-bold d-block">
+              {/*  <span className="text-muted font-weight-bold d-block">
                 CAS : {row.original.casNumber}
-              </span>
+              </span> */}
             </div>
           );
         },
@@ -33,17 +24,18 @@ export default function ItemsTable({ store }) {
       {
         Header: "Quantity",
         accessor: "totalQuantity",
+        Cell: ({ value }) => {
+          return <Badge variant="dark">{value}</Badge>;
+        },
+      },
+      {
+        Header: "Container",
+        accessor: "itemCapacity",
         Cell: ({ row, value }) => {
           return (
-            <>
-              <Badge variant="dark">{value}</Badge>
-              <span className="text-info font-weight-bold d-block">
-                Available in :{" "}
-                <Badge variant="info">
-                  {row.original.itemCapacity} {row.original.storageUnit}
-                </Badge>
-              </span>
-            </>
+            <Badge variant="info">
+              {value} {row.original.storageUnit}
+            </Badge>
           );
         },
       },
@@ -65,11 +57,8 @@ export default function ItemsTable({ store }) {
         Header: "Actions",
         accessor: "action",
         Cell: ({ row }) => {
-          return actionColumnFormatter({
+          return actionFormatter({
             row,
-            openDeleteDiolog: (id) => setShowModel({ type: "delete", id: id, show: true }),
-            openEditDiolog: (id) => setShowModel({ type: "edit", id: id, show: true }),
-            openIssueDiolog: (id) => setShowModel({ type: "issue", id: id, show: true }),
           });
         },
       },
@@ -78,32 +67,11 @@ export default function ItemsTable({ store }) {
     []
   );
   return (
-    <>
-      <BTablePagination
-        columns={columns}
-        dataUrl={`/items?storeId=${store}`}
-        countUrl={`/items/count?storeId.equals=${store}`}
-        pagination
-      />
-      <Modal
-        show={showModel.show}
-        onHide={() => setShowModel({ show: false, id: 0 })}
-        dialogClassName="modal-90w"
-        animation={false}
-        aria-labelledby="add-item-dialog"
-      >
-        <Modal.Body className="p-0">
-          {
-            {
-              delete: <ItemDelete id={showModel.id} />,
-              edit: <ItemUpdate id={showModel.id} update onCancel={() => setShowModel({ show: false })} />,
-              issue: (
-                <ItemIssue onCancel={() => setShowModel({ show: false })} itemId={showModel.id} />
-              ),
-            }[showModel.type]
-          }
-        </Modal.Body>
-      </Modal>
-    </>
+    <BTablePagination
+      columns={columns}
+      dataUrl={`/items?storeId=${store}`}
+      countUrl={`/items/count?storeId.equals=${store}`}
+      pagination
+    />
   );
 }

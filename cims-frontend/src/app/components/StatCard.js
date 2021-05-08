@@ -64,18 +64,16 @@ export default function StatsCard() {
   }, []);
 
   return (
-    <Card>
-      <Card.Header className="border-0 pt-5 pb-0">
-        <Card.Title className="font-weight-bolder">
-        <div className="card-label">Inventory Stats 
-				<div className="font-size-sm text-muted mt-2">Insights of inventory</div></div>
+    <Card className="mb-3 card-custom">
+      <Card.Header className="border-0 pb-0 h-50px">
+      <Card.Title>
+          <h4 className="font-weight-bolder mb-0 text-uppercase">Inventory Summary </h4>
         </Card.Title>
-        
       </Card.Header>
       <Card.Body className="pt-0">
-        <Row className="p-0 mt-5">
+        <Row>
           {state.map((stat, idx) => (
-            <Col className="mt-2" key={idx}>
+            <Col key={idx}>
               <StatCard
                 name={stat.name}
                 value={stat.count}
@@ -93,13 +91,13 @@ export default function StatsCard() {
 
 export function StatCard({ name, value, icon, color }) {
   return (
-    <div className="d-flex align-items-center mr-2">
+    <div className="d-flex align-items-center mr-2 p-2 border rounded">
       <div className={`symbol symbol-50 symbol-light-${color} mr-5`}>
         <span className="symbol-label font-size-h3"> {icon}</span>
       </div>
       <div className="d-flex flex-column">
-        <span className="font-size-h4 text-dark-75 font-weight-bolder">{value}</span>
-        <span className="font-size-sm text-info font-weight-bold mt-1">{name}</span>
+        <span className="font-size-h2 text-dark-75 font-weight-bolder">{value}</span>
+        <span className="font-size-sm text-info font-weight-bold text-uppercase">{name}</span>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ export default function WVendorTable() {
   const columns = [
     {
       Header: "Vendor Name",
-      accessor: "itemName",
+      accessor: "vendorName",
     },
     {
       Header: "Vendor Address",

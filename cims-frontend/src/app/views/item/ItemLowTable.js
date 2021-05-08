@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { Badge, Button, Modal } from "react-bootstrap";
+import React from "react";
+import { Badge, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import BTablePagination from "../../components/table/BTablePagination";
-import ItemOrder from "../order/ItemOrder";
 import { authStoresEquals } from "../../_helpers";
 
 export default function ItemLowTable() {
-
-  const [showModel, setshowModel] = useState({ show: false, id: 0 });
 
   const columns = React.useMemo(
     () => [
@@ -60,9 +58,7 @@ export default function ItemLowTable() {
         Header: "Actions",
         accessor: "action",
         Cell: ({ row }) => {
-          return actionColumnFormatter({
-            showDialog: () => setshowModel({ show: true, id: row.original.id }),
-          });
+          return actionColumnFormatter(row);
         },
       },
     ],
@@ -71,31 +67,20 @@ export default function ItemLowTable() {
   );
 
   return (
-    <>
       <BTablePagination
         columns={columns}
         dataUrl={`/items/low?${authStoresEquals()}`}
         pagination
       />
-      <Modal
-        show={showModel.show}
-        onHide={() => setshowModel({ show: false, id: 0 })}
-        dialogClassName="modal-90w"
-        animation={false}
-        aria-labelledby="add-item-dialog"
-      >
-        <Modal.Body className="p-0">
-          <ItemOrder itemId={showModel.id} onCancel={()=> setshowModel({ show: false, id: 0 })} />
-        </Modal.Body>
-      </Modal>
-    </>
+      
+    
   );
 }
 
-export function actionColumnFormatter({showDialog}) {
+export function actionColumnFormatter({row}) {
   return (
     <>
-      <Button variant="info" size="sm" onClick={() => showDialog()}>
+      <Button variant="info" size="sm" as={Link} to={`/items/${row.original.id}/order`}>
         Reorder
       </Button>
     </>

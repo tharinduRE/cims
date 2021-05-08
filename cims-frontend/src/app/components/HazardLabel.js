@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Image } from "react-bootstrap";
+import { toAbsoluteUrl } from "../_helpers/AssetHelpers";
 
-export default function HazardLabel(props) {
-  let labelUrl = process.env.PUBLIC_URL + "/ghs-labels/";
+export function HazardLabel(props) {
 
   let labels = [
-    { id: 0, label: "GHS-pictogram-exclam.svg" },
-    { id: 1, label: "GHS-pictogram-acid.svg" },
-    { id: 2, label: "GHS-pictogram-bottle.svg" },
-    { id: 3, label: "GHS-pictogram-explos.svg" },
-    { id: 4, label: "GHS-pictogram-flamme.svg" },
-    { id: 5, label: "GHS-pictogram-pollu.svg" },
-    { id: 6, label: "GHS-pictogram-rondflam.svg" },
-    { id: 7, label: "GHS-pictogram-silhouette.svg" },
-    { id: 8, label: "GHS-pictogram-skull.svg" },
+    { id: 0, label: "exclam.svg" },
+    { id: 1, label: "acid.svg" },
+    { id: 2, label: "bottle.svg" },
+    { id: 3, label: "explos.svg" },
+    { id: 4, label: "flamme.svg" },
+    { id: 5, label: "pollu.svg" },
+    { id: 6, label: "rondflam.svg" },
+    { id: 7, label: "silhouette.svg" },
+    { id: 8, label: "skull.svg" },
   ];
 
   const [hazardLabels, setHazardLabels] = useState([0]);
@@ -26,7 +26,7 @@ export default function HazardLabel(props) {
 
   return (
     <>{hazardLabels.map( (label,idx) => (
-        <Image className="ml-1" key={idx} width={60} src={labelUrl+labels[label].label} />
+        <Image className="ml-1" key={idx} width={60} src={toAbsoluteUrl(/ghs-labels/)+labels[label].label} />
     ))}
     </>
   );

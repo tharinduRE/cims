@@ -1,7 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import {DisplayCard} from '../components/'
-import VendorForm from '../views/waste/VendorForm';
+import VendorCard from '../views/waste/VendorCard';
 import WItemTable from '../views/waste/WItemTable';
 import WVendorTable from '../views/waste/WVendorTable';
 
@@ -19,7 +19,7 @@ export default function WasteStore() {
           </DisplayCard>
         </Col>
         <Col lg={4}>
-          <VendorForm/>
+          <VendorCard/>
         </Col>
       </Row>
     );

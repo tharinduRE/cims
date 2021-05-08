@@ -7,12 +7,13 @@ import axios from "../../service/Axios";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import Axios from "../../service/Axios";
+import { authStoresEquals } from "../../_helpers/AuthStoreHelper";
 
 export default function ReportsForm() {
   const { state: authState } = React.useContext(AuthContext);
-
+  const [stores, setStores] = React.useState([])
   const user = authState.user;
-  const authStores = authState.user.authStores;
 
   const generateReport = async (values) => {
     const payload = {
@@ -32,7 +33,7 @@ export default function ReportsForm() {
   const schema = Yup.object().shape({
     store: Yup.string().required("A Store must select"),
   });
-
+  
   return (
     <FormCard icon={BsFileEarmark} title="Generate Reports">
       <Formik
@@ -59,7 +60,7 @@ export default function ReportsForm() {
               name="store"
               placeholder="Select to generate a report"
               clearButton
-              options={authStores}
+              options={stores}
               onChange={(s) => {
                 handleChange("store");
                 setFieldValue("store", s);

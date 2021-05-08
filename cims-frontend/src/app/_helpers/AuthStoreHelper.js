@@ -16,7 +16,7 @@ export const authStores = (stores = AuthStores()) => {
 export const authStoresEquals = (stores = AuthStores()) => {
   let searchStores = stores.map((store) => store.id);
   if (searchStores.length > 0 && searchStores.length != null) {
-    return `&storeId=${searchStores.join(`&storeId=`)}`;
+    return `&storeIds=${searchStores.join(`&storeIds=`)}`;
   }
 };
 

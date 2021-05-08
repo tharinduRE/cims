@@ -1,11 +1,13 @@
 import React from "react";
 import { Button, Card } from "react-bootstrap";
+import { ModalLink } from "./common/ModalLink";
 
-export function EngageCard({ title, desc, action, variant, btnText }) {
+export function EngageCard({ title, desc, action, variant, btnText,btnLink }) {
+
   const button = () => {
     if (btnText)
       return (
-        <Button variant={`${variant || `primary`}`} onClick={action}>
+        <Button variant={`${variant || `primary`}`} as={ModalLink} path={btnLink}>
           {btnText}
         </Button>
       );

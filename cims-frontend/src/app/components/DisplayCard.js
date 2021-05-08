@@ -16,7 +16,7 @@ export function DisplayCard({ title, subtitle, children, moreLink }) {
     <Card className="mb-3 card-custom">
       <Card.Header className="border-0">
         <Card.Title>
-          <h2 className="font-weight-bolder mb-0">{title}</h2>
+          <h3 className="font-weight-bolder mb-0 text-uppercase">{title}</h3>
           <small className="text-muted ml-5">{subtitle}</small>
         </Card.Title>
         <div className="card-toolbar">{viewAll()}</div>

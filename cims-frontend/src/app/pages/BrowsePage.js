@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Card, Col, Dropdown, DropdownButton, Row } from "react-bootstrap";
 import { AuthContext } from "./auth/AuthProvider";
 import ItemsTable from "../views/item/ItemsTable";
+// eslint-disable-next-line no-unused-vars
+import { Link } from "react-router-dom";
 
 export default function Browse() {
   const { state: authState } = React.useContext(AuthContext);
@@ -21,6 +23,7 @@ export default function Browse() {
                 {stores.map((str, index) => (
                   <DropdownButton key={index} className="mr-3" variant="light-info" title={str.name}>
                     <Dropdown.Item
+                      //as={Link} to={`/items/store/${str.id}`}
                       onClick={() => setStore(str.id)}
                       className={str.id === currentStore ? "active" : " "}
                     >
