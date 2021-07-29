@@ -10,7 +10,7 @@ services:
   
   cims-app:
     container_name: cims-app
-    image: ${DOCKER_REPO}/cims-app:latest
+    image: ${DOCKER_REPO}/cims_app:latest
     volumes:
        - ../data/app/:/uploads
     environment:
