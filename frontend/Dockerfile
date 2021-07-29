@@ -1,4 +1,4 @@
-# build environment
+# build environment for remote build
 #FROM node:lts-lpine as build
 #WORKDIR /app
 #ENV PATH /app/node_modules/.bin:$PATH

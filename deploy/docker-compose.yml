@@ -1,27 +1,38 @@
 version: '3.8'
 services:
-  web-app:
-    container_name: web-app
-    image: cims-web-app:latest
+  cims_nginx:
+    container_name: cims_nginx
+    image: ${DOCKER_REPO}/cims_nginx:latest
     ports:
       - 80:80
     depends_on:
       - cims-app
+  
   cims-app:
-    container_name: cims-api
-    image: cims-backend:latest
+    container_name: cims-app
+    image: ${DOCKER_REPO}/cims-app:latest
     volumes:
        - ../data/app/:/uploads
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATASOURCE_URL=jdbc:mysql://cims-mysql:3306/cims?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
-      - JHIPSTER_SLEEP=30
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/cims?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+      # - JHIPSTER_SLEEP=30
     ports:
       - 8080:8080
-  cims-mysql:
-    container_name: cims-mysql
+  
+  #jasper:
+  #  container_name: jasper-reports
+  #  hostname: jasper
+  #  image: reports:1.0.0
+  #  volumes: 
+  #    - ../data/reports/:/data
+  #  ports: 
+  #    - 8081:8081
+
+  mysql:
+    container_name: mysql
     image: mysql:8.0.22
     volumes:
          - ../data/mysql/:/var/lib/mysql/
