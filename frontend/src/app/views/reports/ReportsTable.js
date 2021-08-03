@@ -32,7 +32,7 @@ export default function ReportsTable() {
             return (
               <Button
                 as="a"
-                href={"/data/reports/" + value}
+                href= {value}
                 target="_blank"
                 download={row.name}
                 size="sm"
