@@ -76,6 +76,7 @@ export default function ItemUpdate () {
     console.log(res);
     if (res.status === 201) {
       setSubmitted(true);
+      history.goBack();
     }
   };
 
@@ -88,6 +89,7 @@ export default function ItemUpdate () {
     const res = await itemService.update(payload);
     if (res.status === 201) {
       setSubmitted(true);
+      history.goBack();
     }
   };
 

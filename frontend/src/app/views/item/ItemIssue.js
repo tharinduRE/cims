@@ -39,7 +39,9 @@ export default function ItemIssue({ onComplete }) {
       quantity: -Math.abs(q),
     };
     const res = await Axios.post("/transactions", payload)
-    return res; 
+    if(res.status === 201){
+      cancel();
+    }
   };
 
   useEffect(() => {

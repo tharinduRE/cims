@@ -17,6 +17,10 @@ const getAll = (store) => {
   return fetchApi.get(`/items?size=5&stockStore.in=${store}`);
 };
 
+const getById = (id) => {
+  return fetchApi.get(`/items/${id}`);
+};
+
 const getLowAll = (store, value) => {
   return fetchApi.get(
     `/items/low?page=1&size=5`
@@ -47,5 +51,6 @@ const itemsCrud = {
   add,
   deleteOne,
   update,
+  getById
 };
 export default itemsCrud;
