@@ -7,23 +7,28 @@ import axios from "../../service/Axios";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Axios from "../../service/Axios";
-import { authStoresEquals } from "../../_helpers/AuthStoreHelper";
+// import Axios from "../../service/Axios";
+// import { authStoresEquals } from "../../_helpers/AuthStoreHelper";
 
-export default function ReportsForm() {
+export default function ReportsForm(onGenerate) {
   const { state: authState } = React.useContext(AuthContext);
-  const [stores, setStores] = React.useState([])
+  const stores = JSON.parse(localStorage.getItem('user')).authStores;
   const user = authState.user;
+
+  console.log(stores)
 
   const generateReport = async (values) => {
     const payload = {
       userId: user.id,
-      stockStore: values.store[0].id,
+      storeId: values.store[0].id,
     };
     await axios
       .post("/reports", payload)
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
+        if(res.status === 200){
+          onGenerate = true;
+        }
       })
       .catch((err) => {
         console.log(err);
