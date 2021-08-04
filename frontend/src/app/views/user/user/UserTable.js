@@ -16,9 +16,10 @@ export default function UserTable() {
       Header: "Name",
       accessor: "firstName",
       Cell: ({ row }) => {
+        var avatarUrl = row.original.avatarUrl;
         return (
           <div className="d-flex align-items-center">
-            <Avatar avatarUrl={row.original.avatarUrl} />
+            <Avatar avatarUrl={`.${avatarUrl}`} />
             <div className="flex-column text-left pl-3">
               <span className="d-block">{`${row.original.firstName} ${row.original.lastName}`}</span>
               <span className="text-muted">{row.original.email}</span>

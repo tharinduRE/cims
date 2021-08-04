@@ -24,7 +24,7 @@ export default function TopBar() {
                 {user.postTitle}
               </span>
             </div>
-            <Image src={user.avatarUrl || toAbsoluteUrl('/images/avatar.svg')} width={50} height={50} roundedCircle />
+            <Image src={`.${user.avatarUrl}` || toAbsoluteUrl('/images/avatar.svg')} width={50} height={50} roundedCircle />
           </Dropdown.Toggle>
 
           <Dropdown.Menu>
