@@ -31,7 +31,7 @@ export default function StatsCard() {
   const [state, dispatch] = useReducer(statReducer, initialState);
 
   const getItemCount = async () => {
-    const res = await fetchApi.get(`/item-stocks/count?${authStores(stores)}`);
+    const res = await fetchApi.get(`/items/count?${authStores(stores)}`);
     dispatch({ type: "UPDATE", payload: { id: 1, count: res.data } });
   };
 
@@ -51,7 +51,7 @@ export default function StatsCard() {
   };
 
   const getNewItems = async () => {
-    const res = await fetchApi.get(`/item-stocks/count?createdOn.greaterThan=${last7Days}`);
+    const res = await fetchApi.get(`/items/count?createdOn.greaterThan=${last7Days}`);
     dispatch({ type: "UPDATE", payload: { id: 3, count: res.data } });
   };
 
